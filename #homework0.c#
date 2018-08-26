@@ -32,7 +32,7 @@ int currentLocation;
  *The function validMove is used to check if the anticipated move is valid, or if it has already been done.
  */
 boolean validMove(int move, int location){
-
+  //getting the board location of parameter "location"
   int boardLocation[];
   int i, j;
   for(i = 0; i < boardSize; ++i){
@@ -43,7 +43,7 @@ boolean validMove(int move, int location){
     }
   }
 
-  if(tempLocation > 0 && tempLocation < 26){
+  if(boardLocation > 0 && boardLocation < 26){
     return true;
   }
   else{
