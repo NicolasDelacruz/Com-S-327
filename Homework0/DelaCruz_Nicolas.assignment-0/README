@@ -1,0 +1,9 @@
+Com S 327 Homework 0 - READ ME 08/28/18
+Nicola De la Cruz 
+
+In this homework we had to create a recursive method to do a Knight's Tour. (Close loop)
+The knight's tour, is a knight(chess piece) who has to go through the whole map.
+The method I went on doing this was to create the recursive function, tour, to do the following: check if there is a solution (full array of 25 elements), if so print the array, else to through all the possible moves that piece could do.
+I just passed this recursive function to all the possible starting positions (25) by iterating through my board variable to obtain all the possible solutions.
+
+The challenging part of this assignment was to keep track of the position that you are moving from and to remove spots that were part of the solution but didn't end up working.
