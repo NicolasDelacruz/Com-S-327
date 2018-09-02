@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+
+
 #define mapHeight 21
 
 #define mapWidth 80
@@ -37,8 +39,7 @@ void generateMap(){
 
   for(i = 0; i < mapHeight; ++i){
     for(j = 0; j < mapWidth; ++j){
-      map[i][j].hardness = 0;
-
+      map[i][j].hardness = 255;
 
       if(i == 0 || i == (mapHeight -1)){
         map[i][j].value = '-';
@@ -53,6 +54,40 @@ void generateMap(){
       }
     }
   }
+}
+
+void generateDoor(){
+  int doorWidth = generateRandomNum(3, 10);
+  int doorHeight = generateRandomNum(2,10);
+  int x = generateRandomNum(1,75);
+  int y = generateRandomNum(1,16);
+
+  int i,j;
+
+  for(i = y; i <= (y + doorHeight); ++i){
+    for(j = x; j <= (x + doorWidth); ++j){
+      map[i][j].hardness = 0;
+      map[i][j].value = '.';
+    }
+  }
+
+}
+
+int generateRandomNum(int low, int high){
+  int lower = low;
+  int upper = high;
+
+  int randomNumber = 0;
+
+  srand(time(NULL)); //Seeding with current time
+
+  randomNumber = rand() % upper;
+
+  if(randomNumber < lower)
+  {
+    randomNumber += lower;
+  }
+  return randomNumber;
 }
 
 int printMap(){
@@ -72,5 +107,6 @@ int printMap(){
 int main(int argc, char const *arfv[]){
 
   generateMap();
+  generateDoor();
   printMap();
 }
