@@ -59,8 +59,8 @@ void generateMap(){
 void generateDoor(){
   int doorWidth = generateRandomNum(3, 10);
   int doorHeight = generateRandomNum(2,10);
-  int x = generateRandomNum(1,75);
-  int y = generateRandomNum(1,16);
+  int x = generateRandomNum(1,(mapWidth - doorWidth));
+  int y = generateRandomNum(1,(mapHeight - doorHeight));
 
   int i,j;
 
@@ -73,13 +73,21 @@ void generateDoor(){
 
 }
 
+void generateAllRooms(){
+  int i;
+
+  for(i = 0; i < 5; ++i){
+    generateDoor();
+  }
+}
+
 int generateRandomNum(int low, int high){
   int lower = low;
   int upper = high;
 
   int randomNumber = 0;
 
-  srand(time(NULL)); //Seeding with current time
+  //srand(time(NULL)); //Seeding with current time
 
   randomNumber = rand() % upper;
 
@@ -105,8 +113,12 @@ int printMap(){
 }
 
 int main(int argc, char const *arfv[]){
+  srand(time(NULL)); //Seeding with current time
+
 
   generateMap();
-  generateDoor();
+
+  generateAllRooms();
+
   printMap();
 }
