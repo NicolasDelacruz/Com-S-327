@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include <stdbool.h>
+
 
 
 #define mapHeight 21
@@ -56,16 +58,11 @@ void generateMap(){
   }
 }
 
-void generateDoor(){
-  int doorWidth = generateRandomNum(3, 10);
-  int doorHeight = generateRandomNum(2,10);
-  int x = generateRandomNum(1,(mapWidth - doorWidth));
-  int y = generateRandomNum(1,(mapHeight - doorHeight));
-
+void placeRoom(int givenx, int giveny, int givenWidth, int givenHeight){
   int i,j;
 
-  for(i = y; i <= (y + doorHeight); ++i){
-    for(j = x; j <= (x + doorWidth); ++j){
+  for(i = giveny; i <= (giveny + givenHeight); ++i){
+    for(j = givenx; j <= (givenx + givenWidth); ++j){
       map[i][j].hardness = 0;
       map[i][j].value = '.';
     }
@@ -73,11 +70,46 @@ void generateDoor(){
 
 }
 
+
+bool validRoom(int givenX, int givenY, int givenWidth, int givenHeight){
+  int i, j;
+
+  int tempX = givenX;
+  int tempY = givenY;
+
+  if(givenY > 1){
+    tempY -= 1;
+  }
+
+  if(givenX > 1){
+    tempX -= 1;
+  }
+
+  for(i = tempY; i <= (tempY + givenHeight +1); ++i){
+    for(j = tempX; j <= (tempX + givenWidth +1); ++j){
+      if(map[i][j].value != ' '){
+	return false;
+      }
+    }
+  }
+  return true;
+}
+
 void generateAllRooms(){
+  int doorWidth, doorHeight, x, y;
   int i;
 
   for(i = 0; i < 5; ++i){
-    generateDoor();
+    doorWidth = generateRandomNum(3, 10);
+    doorHeight = generateRandomNum(2,10);
+    x = generateRandomNum(1,(mapWidth - doorWidth));
+    y = generateRandomNum(1,(mapHeight - doorHeight));
+    if(validRoom(x,y,doorWidth,doorHeight)){
+      placeRoom(x, y, doorWidth, doorHeight);
+    }
+    else{
+      i--;
+    }
   }
 }
 
