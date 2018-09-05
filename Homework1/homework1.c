@@ -1,23 +1,27 @@
 #include <stdio.h>
-
 #include <stdbool.h>
+#include <math.h>
 
 
-
+//the variable mapHeight is an immutable variable that holds the value 21 that represents that height of map
 #define mapHeight 21
 
+//the variable mapWidth is an immutable variable that hold the value 80 that represents the width of the map
 #define mapWidth 80
 
-
+//the variable terminalHeight is the total height of the terminal
 int terminalHeight = 24;
 
+//the variable numberOfRooms represents the total number of rooms on the map
 int numberOfRooms = 5;
 
+//the struct tile is to represent each tile on the map
 struct tile {
   int hardness;
   char value;
 };
 
+//the struct room is to represent a room
 struct room {
   int x;
   int y;
@@ -25,8 +29,10 @@ struct room {
   int height;
 };
 
+//the array map is a 2D array that is made up of tile structs
 struct tile map[mapHeight][mapWidth];
 
+//the array rooms is an arra that is made up of room structs
 struct room rooms[5];
 
 
@@ -47,6 +53,8 @@ struct room rooms[5];
  * -Must connect all rooms together
  */
 
+
+//the function generateMap places the border of the map
 void generateMap(){
   int i, j;
 
@@ -69,6 +77,8 @@ void generateMap(){
   }
 }
 
+//the function placeRoom places a room starting at given X & Y coordinates at a given height and width
+//this function also adds the room to the rooms array
 void placeRoom(int givenx, int giveny, int givenWidth, int givenHeight, int roomIndex){
   int i,j;
 
@@ -85,6 +95,7 @@ void placeRoom(int givenx, int giveny, int givenWidth, int givenHeight, int room
 
 }
 
+//the function sortAllRooms re-arranges the rooms by x-coordinates from lowest to greatest
 void sortAllRooms(){
   int i, j, minIndex;
   for(i = 0; i < 4; ++i){
@@ -99,6 +110,7 @@ void sortAllRooms(){
   }
 }
 
+//the function addCorridors adds the corridors to the map by adding the y then the x corridors
 void addCorridors(int givenx1, int giveny1, int givenx2, int giveny2){
   int i, j, increment;
 
@@ -122,6 +134,8 @@ void addCorridors(int givenx1, int giveny1, int givenx2, int giveny2){
   }
 }
 
+//the function placeCorridors sorts the array of rooms then iterates through all of the array -1 to add the corridors
+//the function also connects the last room with the first one to finish the loop
 void placeCorridors(){
   sortAllRooms();
   int i, x1, x2, y1, y2;
@@ -142,7 +156,8 @@ void placeCorridors(){
   addCorridors(x1,y1,x2,y2);
 }
 
-
+//the function validRoom takes in the following ints: x,y, width, and height
+//with these variables the function checks if placing a room with these parameters is valid
 bool validRoom(int givenX, int givenY, int givenWidth, int givenHeight){
   int i, j;
 
@@ -156,11 +171,12 @@ bool validRoom(int givenX, int givenY, int givenWidth, int givenHeight){
   return true;
 }
 
+//the function generateAllRooms keeps attempting to place a room of random dimensions and location until it meets total number of rooms requirement
 void generateAllRooms(){
   int doorWidth, doorHeight, x, y;
   int i;
 
-  for(i = 0; i < 5; ++i){
+  for(i = 0; i < numberOfRooms; ++i){
     doorWidth = generateRandomNum(3, 10);
     doorHeight = generateRandomNum(2,10);
     x = generateRandomNum(1,(mapWidth - doorWidth));
@@ -174,6 +190,7 @@ void generateAllRooms(){
   }
 }
 
+//the function generateRandomNum generates a random number between the low and high (both are available)
 int generateRandomNum(int low, int high){
   int lower = low;
   int upper = high;
@@ -191,6 +208,7 @@ int generateRandomNum(int low, int high){
   return randomNumber;
 }
 
+//the function printMap prints the entire map on the terminal
 int printMap(){
   int i, j;
 
