@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 
 //the variable mapHeight is an immutable variable that holds the value 21 that represents that height of map
@@ -52,6 +54,25 @@ struct room rooms[5];
  * -Cannot extend into rooms
  * -Must connect all rooms together
  */
+
+
+void generateMap();
+
+void placeRoom(int givenx, int giveny, int givenWidth, int givenHeight, int roomIndex);
+
+void sortAllRooms();
+
+void addCorridors(int givenx1, int giveny1, int givenx2, int giveny2);
+
+void placeCorridors();
+
+bool validRoom(int givenX, int givenY, int givenWidth, int givenHeight);
+
+void generateAllRooms();
+
+int generateRandomNum(int low, int high);
+
+void printMap();
 
 
 //the function generateMap places the border of the map
@@ -209,7 +230,7 @@ int generateRandomNum(int low, int high){
 }
 
 //the function printMap prints the entire map on the terminal
-int printMap(){
+void printMap(){
   int i, j;
 
   for(i = 0; i < mapHeight; ++i){
@@ -234,4 +255,6 @@ int main(int argc, char const *arfv[]){
   placeCorridors();
 
   printMap();
+
+  return 0;
 }
