@@ -200,6 +200,9 @@ void generateAllRooms(){
   for(i = 0; i < numberOfRooms; ++i){
     doorWidth = generateRandomNum(3, 10);
     doorHeight = generateRandomNum(2,10);
+    while(doorHeight == doorWidth){
+      doorHeight = generateRandomNum(2,10);
+    }
     x = generateRandomNum(1,(mapWidth - doorWidth));
     y = generateRandomNum(1,(mapHeight - doorHeight));
     if(validRoom(x,y,doorWidth,doorHeight)){
