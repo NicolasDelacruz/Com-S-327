@@ -684,22 +684,82 @@ void init_dungeon(dungeon_t *d)
   empty_dungeon(d);
 }
 
+
+
+
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+void readFile(FILE *dungeonInfo){
+  //Finds total bytes in document for use later
+  char bytes;
+  fread(&bytes, sizeof(bytes), 1, dungeonInfo);
+  printf("%c", bytes);
+
+}
+
+void writeFile(FILE *file, dungeon_t *d){
+  int i, j, k;
+  char filename[] = "RLG327-F2018";
+  uint32_t version = 0;
+  uint32_t fileSize = 1702;
+  uint8_t position = 18;
+  uint8_t hardness;
+  uint8_t xPos;
+  uint8_t yPos;
+  uint8_t width;
+  uint8_t height;
+
+  //opning file to write in
+  file = fopen("test", "w");
+
+  //writing filename
+  fwrite(&filename, sizeof(filename), 1, file);
+
+  fwrite(&version, sizeof(version), 1, file);
+
+  fwrite(&fileSize, sizeof(fileSize), 1, file);
+
+  fwrite(&position, sizeof(position), 1, file);
+
+  for(i = 0; i < DUNGEON_Y; ++i){
+    for(j = 0; j < DUNGEON_X; ++j){
+      hardness = d->hardness[i][j];
+      fwrite(&hardness, sizeof(hardness), 1, file);
+    }
+  }
+
+  for(k = 0; k < d->num_rooms; ++k){
+    xPos = d->rooms[i].position[dim_x];
+    yPos = d->rooms[i].position[dim_y];
+    width = d->rooms[i].size[dim_y];
+    height = d->rooms[i].size[dim_x];
+    fwrite(&xPos, sizeof(xPos), 1, file);
+    fwrite(&yPos, sizeof(yPos), 1, file);
+    fwrite(&width, sizeof(width), 1, file);
+    fwrite(&height, sizeof(height), 1, file);
+  }
+
+  fwrite(&filename, sizeof(filename), 1, file);
+
+  //closing the file
+  fclose(file);
+}
+
 int main(int argc, char *argv[])
 {
+  FILE *f;
   dungeon_t d;
   struct timeval tv;
   uint32_t seed;
 
+  //Checks if desired directory exists, creates directory if not
+  /*
+  char *dir = getenv("HOME");
+  char *path = strcat(dir, "/.rlg327/");
+  mkdir(path, 0777);*/
+
   UNUSED(in_room);
 
-  /*
-  if (argc == 2) {
-    seed = atoi(argv[1]);
-  } else {
-    gettimeofday(&tv, NULL);
-    seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
-  }
-  */
   gettimeofday(&tv, NULL);
   seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   printf("Using seed: %u\n", seed);
@@ -723,6 +783,12 @@ int main(int argc, char *argv[])
    */
   if(strcmp(argv[1], "--save") == 0){
     printf("save switch\n");
+    init_dungeon(&d);//creates empty dungeon
+    gen_dungeon(&d);//fills dungeons
+    render_dungeon(&d);//prints the dungeon
+    delete_dungeon(&d);//clears the dungeon
+    writeFile(f, &d);
+
     //TODO
   }
   else if(strcmp(argv[1], "--load") == 0 && argv[2] == NULL){
