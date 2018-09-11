@@ -685,17 +685,61 @@ void init_dungeon(dungeon_t *d)
 }
 
 
-
-
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
-void readFile(FILE *dungeonInfo){
-  //Finds total bytes in document for use later
-  char bytes;
-  fread(&bytes, sizeof(bytes), 1, dungeonInfo);
-  printf("%c", bytes);
+void readFile(FILE *f, dungeon_t *d){
+  int i, j;
 
+  char filename[12];
+  uint8_t board[21][80];
+  uint32_t version;
+  uint32_t fileSize;
+  uint8_t xPos;
+  uint8_t yPos;
+  uint8_t hardness;
+  //char hardness, roomX, roomY, roomWidth, roomHeight;
+
+  //getting the name
+  fread(&filename, sizeof(filename), 1, f);
+
+  //getting the version
+  fread(&version, sizeof(version), 1, f);
+
+  //getting the file size
+  fread(&fileSize, sizeof(fileSize), 1, f);
+
+  fread(&xPos, sizeof(xPos), 1, f);
+  fread(&yPos, sizeof(yPos), 1, f);
+
+  for(i = 0; i < 21; ++i){
+    for(j = 0; j < 80; ++j){
+      fread(&hardness, sizeof(hardness), 1, f);
+      board[i][j] = hardness;
+    }
+  }
+
+
+  printf("%s \n",filename);
+  printf("%x \n", version);
+  printf("%u \n", fileSize);
+  printf("%d \n", xPos);
+  printf("%d \n", yPos);
+  printf("%d \n", hardness);
+
+  for(i = 0; i < 21; ++i){
+    for(j = 0; j < 80; ++j){
+      if(board[i][j]== 0){
+	printf("%c", '#');
+      }
+      else{
+	printf("%c", ' ');
+      }
+    }
+    
+  }
+  printf("%c", '\n');
 }
+
 
 void writeFile(FILE *file, dungeon_t *d){
   int i, j, k;
@@ -710,7 +754,7 @@ void writeFile(FILE *file, dungeon_t *d){
   uint8_t height;
 
   //opning file to write in
-  file = fopen("test", "w");
+  //file = fopen("test", "w");
 
   //writing filename
   fwrite(&filename, sizeof(filename), 1, file);
@@ -738,11 +782,6 @@ void writeFile(FILE *file, dungeon_t *d){
     fwrite(&width, sizeof(width), 1, file);
     fwrite(&height, sizeof(height), 1, file);
   }
-
-  fwrite(&filename, sizeof(filename), 1, file);
-
-  //closing the file
-  fclose(file);
 }
 
 int main(int argc, char *argv[])
@@ -787,13 +826,18 @@ int main(int argc, char *argv[])
     gen_dungeon(&d);//fills dungeons
     render_dungeon(&d);//prints the dungeon
     delete_dungeon(&d);//clears the dungeon
+    f = fopen("test", "w");
     writeFile(f, &d);
+    fclose(f);
 
     //TODO
   }
   else if(strcmp(argv[1], "--load") == 0 && argv[2] == NULL){
     //TODO
     printf("load switch\n");
+    f = fopen("101.rlg327", "rb");
+    readFile(f, &d);
+    fclose(f);
   }
   else if(strcmp(argv[1], "--load") == 0 && strcmp(argv[2], "--save") == 0){
     //TODO
