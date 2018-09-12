@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <limits.h>
 #include <sys/time.h>
+#include <string.h>
 
 /* Very slow seed: 686846853 */
 
@@ -686,119 +687,203 @@ void init_dungeon(dungeon_t *d)
 
 
 //-----------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------
-void readFile(FILE *f, dungeon_t *d){
+
+//this function converts from little endian to big endian, taken from: http://www.firmcodes.com/write-c-program-convert-little-endian-big-endian-integer/
+unsigned int LitToBigEndian(unsigned int x){
+  return (((x>>24) & 0x000000ff) | ((x>>8) & 0x0000ff00) | ((x<<8) & 0x00ff0000) | ((x<<24) & 0xff000000));
+}
+
+//the function writeFile is used to write data information to the file 'f'
+void writeFile(FILE *file, dungeon_t *d){
+  //the variable filename holds the name of file
+  char filename[12] = "RLG327_F2018";
+
+  //the variables version will hold the file version
+  uint32_t version = 0;
+
+  //the variable fileSize will hold the size of file 'f'
+  uint32_t fileSize = 1702 + (d->num_rooms*4);
+
+  //the variables xPos and yPos hold the value of the position of player character
+  uint8_t xPos = 1;
+  uint8_t yPos = 1;
+
+  //the variable hardness is used to collect each hardness value of the map
+  uint8_t hardness[1680];
+
+  //the variables below will hold position of the player character or information of a room or hardness of each part of map
+  uint8_t roomX, roomY, roomW, roomH;
+
+  //the variables below are used in for loops
   int i, j;
 
+  //writing to file the file name of file
+  fwrite(&filename, sizeof(filename), 1, file);
+  printf("%s \n", filename);
+
+  //writing to file the version of the file
+  fwrite(&version, sizeof(version), 1, file);
+  printf("%u \n", version);
+
+
+  //writing to file the size of the file
+  fwrite(&fileSize, sizeof(fileSize), 1, file);
+  printf("%u \n", fileSize);
+
+  //writing to file the position of player character
+  fwrite(&xPos, sizeof(xPos), 1, file);
+  fwrite(&yPos, sizeof(yPos), 1, file);
+
+  printf("%u \n", xPos);
+  printf("%u \n", yPos);
+
+  //the variable counter is used to keep track of position of index to be used in hardness[]
+  int counter = 0;
+
+  //itterating through map and collecting all the data of map then storing it in variable hardness
+  for(i = 0; i < DUNGEON_Y; ++i){
+    for(j = 0; j < DUNGEON_X; ++j){
+      hardness[counter] = d->hardness[i][j];
+      counter++;
+    }
+  }
+
+  //writing all the hardness data of map to file
+  fwrite(&hardness, sizeof(hardness), 1, file);
+
+  //in this for loop the program is collecting all the data of the rooms and writing rooms to file
+  for(i = 0; i < d->num_rooms; ++i){
+    roomX = d->rooms[i].position[dim_x];
+    roomY = d->rooms[i].position[dim_y];
+    roomW = d->rooms[i].size[dim_x];
+    roomH = d->rooms[i].size[dim_y];
+    fwrite(&roomX, sizeof(roomX), 1, file);
+    fwrite(&roomY, sizeof(roomY), 1, file);
+    fwrite(&roomW, sizeof(roomW), 1, file);
+    fwrite(&roomH, sizeof(roomH), 1, file);
+  }
+}
+
+/*
+ *The function readFile parses the file to get the following:
+ *File name
+ *File version
+ *File size
+ *X and Y position of player character
+ *The dungeon information of rooms, corridors, and rocks
+ */
+void readFile(FILE *f, dungeon_t *d){
+  //the variable filename holds the name of file
   char filename[12];
-  uint8_t board[21][80];
-  uint32_t version;
-  uint32_t fileSize;
-  uint8_t xPos;
-  uint8_t yPos;
-  uint8_t hardness;
-  //char hardness, roomX, roomY, roomWidth, roomHeight;
+
+  //the variablemap will hold all the values to represent the map
+  uint8_t map[21][80];
+
+  //the variable hardness will hold all the hardness variables
+  uint8_t hardness[1680];
+
+  //the variables version will hold the file version and fileSize will hold the size of file 'f'
+  uint32_t version, fileSize;
+
+  //the variables below will hold position of the player character or information of a room
+  uint8_t xPos, yPos, roomX, roomY, roomW, roomH;
+
+  //the variable numberOfRooms is used to store the number of rooms that are in the file
+  int numberOfRooms;
 
   //getting the name
   fread(&filename, sizeof(filename), 1, f);
+  printf("%s \n", filename);
 
   //getting the version
   fread(&version, sizeof(version), 1, f);
+  printf("%u \n", version);
 
   //getting the file size
   fread(&fileSize, sizeof(fileSize), 1, f);
 
+  //checking if file needs to be in big endian, if so convert file size to big endian
+  if(fileSize > 20000){
+    fileSize = LitToBigEndian(fileSize);
+  }
+
+  printf("%u \n", fileSize);
+
+  //getting the positions of x player character (x,y)
   fread(&xPos, sizeof(xPos), 1, f);
   fread(&yPos, sizeof(yPos), 1, f);
+  printf("%u \n", xPos);
+  printf("%u \n", yPos);
 
-  for(i = 0; i < 21; ++i){
-    for(j = 0; j < 80; ++j){
-      fread(&hardness, sizeof(hardness), 1, f);
-      board[i][j] = hardness;
-    }
-  }
+  //getting the hardness values
+  fread(&hardness, sizeof(hardness), 1, f);
 
-
-  printf("%s \n",filename);
-  printf("%x \n", version);
-  printf("%u \n", fileSize);
-  printf("%d \n", xPos);
-  printf("%d \n", yPos);
-  printf("%d \n", hardness);
-
-  for(i = 0; i < 21; ++i){
-    for(j = 0; j < 80; ++j){
-      if(board[i][j]== 0){
-	printf("%c", '#');
+  //placing in hardness values in map as well as map boarder
+  int i, j, k;
+  
+  //the variable counter is used to keep track of what index to get from hardness array
+  int counter = 0;
+  for (i = 0; i < 21; i++){
+    for (j = 0; j < 80; j++){
+      //the following if is to place the boarder, else if is to place the corridor or room, else is to place a rock
+      if(i == 0 || i == 20 || j == 0 || j == 79){
+	map[i][j] = '*';
+      }
+      else if (hardness[counter] == 0){
+	map[i][j] = '#';
       }
       else{
-	printf("%c", ' ');
+	map[i][j] = ' ';
+      }
+      counter++;
+    }
+  }
+
+  //calculating the number of rooms by taking total file size minus the number of bytes that are used for previous data
+  numberOfRooms = (int)((fileSize-1702));
+
+  //getting the data of each room and placing room in map
+  for(i = 0; i < numberOfRooms; ++i){
+    fread(&roomX, sizeof(roomX), 1, f);
+    fread(&roomY, sizeof(roomY), 1, f);
+    fread(&roomW, sizeof(roomW), 1, f);
+    fread(&roomH, sizeof(roomH), 1, f);
+    for(j = roomY; j < roomY+roomH; ++j){
+      for(k = roomX; k < roomX+roomW; ++k){
+	map[j][k] = '.';
       }
     }
-    
   }
-  printf("%c", '\n');
-}
 
-
-void writeFile(FILE *file, dungeon_t *d){
-  int i, j, k;
-  char filename[] = "RLG327-F2018";
-  uint32_t version = 0;
-  uint32_t fileSize = 1702;
-  uint8_t position = 18;
-  uint8_t hardness;
-  uint8_t xPos;
-  uint8_t yPos;
-  uint8_t width;
-  uint8_t height;
-
-  //opning file to write in
-  //file = fopen("test", "w");
-
-  //writing filename
-  fwrite(&filename, sizeof(filename), 1, file);
-
-  fwrite(&version, sizeof(version), 1, file);
-
-  fwrite(&fileSize, sizeof(fileSize), 1, file);
-
-  fwrite(&position, sizeof(position), 1, file);
-
-  for(i = 0; i < DUNGEON_Y; ++i){
-    for(j = 0; j < DUNGEON_X; ++j){
-      hardness = d->hardness[i][j];
-      fwrite(&hardness, sizeof(hardness), 1, file);
+  //printing the map
+  for(i = 0; i < 21; ++i){
+    for(j = 0; j < 80; ++j){
+      printf("%c", map[i][j]);
     }
-  }
-
-  for(k = 0; k < d->num_rooms; ++k){
-    xPos = d->rooms[i].position[dim_x];
-    yPos = d->rooms[i].position[dim_y];
-    width = d->rooms[i].size[dim_y];
-    height = d->rooms[i].size[dim_x];
-    fwrite(&xPos, sizeof(xPos), 1, file);
-    fwrite(&yPos, sizeof(yPos), 1, file);
-    fwrite(&width, sizeof(width), 1, file);
-    fwrite(&height, sizeof(height), 1, file);
+    printf("\n");
   }
 }
+
+
 
 int main(int argc, char *argv[])
 {
-  FILE *f;
   dungeon_t d;
   struct timeval tv;
   uint32_t seed;
 
-  //Checks if desired directory exists, creates directory if not
-  /*
-  char *dir = getenv("HOME");
-  char *path = strcat(dir, "/.rlg327/");
-  mkdir(path, 0777);*/
+  FILE *f;
 
+  //the path variable is the directory path of where to look for file
+  char *path;
+  path = malloc(strlen(getenv("HOME"))+strlen("/.rlg327/dungeon")+1);
+
+  //adding the directory path to the variable path
+  strcpy(path, getenv("HOME"));
+  strcat(path, "/.rlg327/dungeon");
+
+  //getting the seed to use for random
   UNUSED(in_room);
-
   gettimeofday(&tv, NULL);
   seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   printf("Using seed: %u\n", seed);
@@ -826,7 +911,8 @@ int main(int argc, char *argv[])
     gen_dungeon(&d);//fills dungeons
     render_dungeon(&d);//prints the dungeon
     delete_dungeon(&d);//clears the dungeon
-    f = fopen("test", "w");
+
+    f = fopen(path, "wb");
     writeFile(f, &d);
     fclose(f);
 
@@ -835,7 +921,7 @@ int main(int argc, char *argv[])
   else if(strcmp(argv[1], "--load") == 0 && argv[2] == NULL){
     //TODO
     printf("load switch\n");
-    f = fopen("101.rlg327", "rb");
+    f = fopen(path, "rb");
     readFile(f, &d);
     fclose(f);
   }
