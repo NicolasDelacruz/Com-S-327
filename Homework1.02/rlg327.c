@@ -8,6 +8,7 @@
 #include <limits.h>
 #include <sys/time.h>
 #include <string.h>
+#include <endian.h>
 
 /* Very slow seed: 686846853 */
 
@@ -686,17 +687,10 @@ void init_dungeon(dungeon_t *d)
 }
 
 
-//-----------------------------------------------------------------------------------------
-
-//this function converts from little endian to big endian, taken from: http://www.firmcodes.com/write-c-program-convert-little-endian-big-endian-integer/
-unsigned int LitToBigEndian(unsigned int x){
-  return (((x>>24) & 0x000000ff) | ((x>>8) & 0x0000ff00) | ((x<<8) & 0x00ff0000) | ((x<<24) & 0xff000000));
-}
-
 //the function writeFile is used to write data information to the file 'f'
 void writeFile(FILE *file, dungeon_t *d){
   //the variable filename holds the name of file
-  char filename[12] = "RLG327_F2018";
+  char filename[] = "RLG327_F2018";
 
   //the variables version will hold the file version
   uint32_t version = 0;
@@ -719,23 +713,19 @@ void writeFile(FILE *file, dungeon_t *d){
 
   //writing to file the file name of file
   fwrite(&filename, sizeof(filename), 1, file);
-  printf("%s \n", filename);
 
-  //writing to file the version of the file
+  //writing to file the version of the file then changing the file size to big endian
   fwrite(&version, sizeof(version), 1, file);
-  printf("%u \n", version);
+  version = htobe32(version);
 
 
-  //writing to file the size of the file
+  //writing to file the size of the file then changing the file size to big endian
   fwrite(&fileSize, sizeof(fileSize), 1, file);
-  printf("%u \n", fileSize);
+  fileSize = htobe32(fileSize);
 
   //writing to file the position of player character
   fwrite(&xPos, sizeof(xPos), 1, file);
   fwrite(&yPos, sizeof(yPos), 1, file);
-
-  printf("%u \n", xPos);
-  printf("%u \n", yPos);
 
   //the variable counter is used to keep track of position of index to be used in hardness[]
   int counter = 0;
@@ -774,7 +764,7 @@ void writeFile(FILE *file, dungeon_t *d){
  */
 void readFile(FILE *f, dungeon_t *d){
   //the variable filename holds the name of file
-  char filename[12];
+  char filename[13];
 
   //the variablemap will hold all the values to represent the map
   uint8_t map[21][80];
@@ -793,27 +783,22 @@ void readFile(FILE *f, dungeon_t *d){
 
   //getting the name
   fread(&filename, sizeof(filename), 1, f);
-  printf("%s \n", filename);
+  strcat(filename, "\0");
 
   //getting the version
   fread(&version, sizeof(version), 1, f);
-  printf("%u \n", version);
 
   //getting the file size
   fread(&fileSize, sizeof(fileSize), 1, f);
 
   //checking if file needs to be in big endian, if so convert file size to big endian
   if(fileSize > 20000){
-    fileSize = LitToBigEndian(fileSize);
+    fileSize = htobe32(fileSize);
   }
-
-  printf("%u \n", fileSize);
 
   //getting the positions of x player character (x,y)
   fread(&xPos, sizeof(xPos), 1, f);
   fread(&yPos, sizeof(yPos), 1, f);
-  printf("%u \n", xPos);
-  printf("%u \n", yPos);
 
   //getting the hardness values
   fread(&hardness, sizeof(hardness), 1, f);
@@ -915,19 +900,18 @@ int main(int argc, char *argv[])
     f = fopen(path, "wb");
     writeFile(f, &d);
     fclose(f);
-
-    //TODO
   }
   else if(strcmp(argv[1], "--load") == 0 && argv[2] == NULL){
-    //TODO
     printf("load switch\n");
     f = fopen(path, "rb");
     readFile(f, &d);
     fclose(f);
   }
   else if(strcmp(argv[1], "--load") == 0 && strcmp(argv[2], "--save") == 0){
-    //TODO
     printf("load and save switch\n");
+    f = fopen(path, "rb");
+    readFile(f, &d);
+    fclose(f);
   }
   else {
     fprintf(stderr, "Bad arguments format.\n");
