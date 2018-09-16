@@ -31,6 +31,13 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
+/*Creating duplicate of corridor_path but without from*/
+typedef struct monster_path {
+  heap_node_t *hn;
+  uint8_t pos[2];
+  int32_t cost;
+} monster_path_t;
+
 typedef enum dim {
   dim_x,
   dim_y,
@@ -1098,6 +1105,271 @@ void usage(char *name)
   exit(-1);
 }
 
+
+
+
+
+static int32_t monster_path_cmp(const void *key, const void *with) {
+  return ((monster_path_t *) key)->cost - ((monster_path_t *) with)->cost;
+}
+
+
+static void dijkstra_no_rock_monster_path(dungeon_t *d)
+{
+  static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
+  static uint32_t initialized = 0;
+  heap_t h;
+  uint32_t x, y;
+  
+  if (!initialized) {
+    for (y = 0; y < DUNGEON_Y; y++) {
+      for (x = 0; x < DUNGEON_X; x++) {
+        path[y][x].pos[dim_y] = y;
+        path[y][x].pos[dim_x] = x;
+      }
+    }
+    initialized = 1;
+  }
+  
+  for (y = 0; y < DUNGEON_Y; y++) {
+    for (x = 0; x < DUNGEON_X; x++) {
+      path[y][x].cost = INT_MAX;
+    }
+  }
+
+  path[d->pc[dim_y]][d->pc[dim_x]].cost = 0;
+  
+  heap_init(&h, monster_path_cmp, NULL);
+
+  for (y = 0; y < DUNGEON_Y; y++) {
+    for (x = 0; x < DUNGEON_X; x++) {
+      if (mapxy(x, y) != ter_wall_immutable && mapxy(x, y) != ter_wall) {
+        path[y][x].hn = heap_insert(&h, &path[y][x]);
+      } else {
+        path[y][x].hn = NULL;
+      }
+    }
+  }
+
+  while ((p = heap_remove_min(&h))) {
+    p->hn = NULL;
+
+    uint32_t costToAdd = hardnesspair(p->pos) / 85 + 1;
+
+    //checking position 1: y-1 (North)
+    if ((path[p->pos[dim_y] - 1][p->pos[dim_x]    ].hn) &&
+        (path[p->pos[dim_y] - 1][p->pos[dim_x]    ].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] - 1][p->pos[dim_x]    ].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
+                                           [p->pos[dim_x]    ].hn);
+    }
+    //checking position 2: x-1 (West)
+    if ((path[p->pos[dim_y]    ][p->pos[dim_x] - 1].hn) &&
+        (path[p->pos[dim_y]    ][p->pos[dim_x] - 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y]    ][p->pos[dim_x] - 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y]    ]
+                                           [p->pos[dim_x] - 1].hn);
+    }
+    //checking position 3: x+1 (East)
+    if ((path[p->pos[dim_y]    ][p->pos[dim_x] + 1].hn) &&
+        (path[p->pos[dim_y]    ][p->pos[dim_x] + 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y]    ][p->pos[dim_x] + 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y]    ]
+                                           [p->pos[dim_x] + 1].hn);
+    }
+    //checking position 4: y+1 (South)
+    if ((path[p->pos[dim_y] + 1][p->pos[dim_x]    ].hn) &&
+        (path[p->pos[dim_y] + 1][p->pos[dim_x]    ].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] + 1][p->pos[dim_x]    ].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
+                                           [p->pos[dim_x]    ].hn);
+    }
+    //checking position 5: y-1, x-1 (North-West)
+    if ((path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].hn) &&
+        (path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
+                                           [p->pos[dim_x] - 1].hn);
+    }
+    //checking position 6: y-1, x+1 (North-East)
+    if ((path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].hn) &&
+        (path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
+                                           [p->pos[dim_x] + 1].hn);
+    }
+    //checking position 7: y+1, x+1 (South-East)
+    if ((path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].hn) &&
+        (path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
+                                           [p->pos[dim_x] + 1].hn);
+    }
+    //checking position 8: y+1, x-1 (South-West)
+    if ((path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].hn) &&
+        (path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
+                                           [p->pos[dim_x] - 1].hn);
+    }
+  }
+  
+  //using a value to track pc to print '@'
+  path[d->pc[dim_y]][d->pc[dim_x]].cost = -1;
+  
+  //printing the map of cost for monsters that can go through world
+  int i,j;
+  for(i = 0; i < DUNGEON_Y; ++i){
+    for(j = 0; j < DUNGEON_X; ++j){
+      if(path[i][j].cost == -1){
+	printf("%c", '@');
+      }
+      else if(path[i][j].cost >= 214748364){
+	printf("%c", ' ');
+      }
+      else {
+	printf("%d", (path[i][j].cost % 10));
+      }
+    }
+    printf("\n");
+  }
+}
+
+static void dijkstra_monster_path(dungeon_t *d)
+{
+  static monster_path_t path[DUNGEON_Y][DUNGEON_X], *p;
+  static uint32_t initialized = 0;
+  heap_t h;
+  uint32_t x, y;
+  
+  if (!initialized) {
+    for (y = 0; y < DUNGEON_Y; y++) {
+      for (x = 0; x < DUNGEON_X; x++) {
+        path[y][x].pos[dim_y] = y;
+        path[y][x].pos[dim_x] = x;
+      }
+    }
+    initialized = 1;
+  }
+  
+  for (y = 0; y < DUNGEON_Y; y++) {
+    for (x = 0; x < DUNGEON_X; x++) {
+      path[y][x].cost = INT_MAX;
+    }
+  }
+
+  path[d->pc[dim_y]][d->pc[dim_x]].cost = 0;
+  
+  heap_init(&h, monster_path_cmp, NULL);
+
+  for (y = 0; y < DUNGEON_Y; y++) {
+    for (x = 0; x < DUNGEON_X; x++) {
+      if (mapxy(x, y) != ter_wall_immutable) {
+        path[y][x].hn = heap_insert(&h, &path[y][x]);
+      } else {
+        path[y][x].hn = NULL;
+      }
+    }
+  }
+
+  while ((p = heap_remove_min(&h))) {
+    p->hn = NULL;
+
+    uint32_t costToAdd = hardnesspair(p->pos) / 85 + 1;
+
+    //checking position 1: y-1 (North)
+    if ((path[p->pos[dim_y] - 1][p->pos[dim_x]    ].hn) &&
+        (path[p->pos[dim_y] - 1][p->pos[dim_x]    ].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] - 1][p->pos[dim_x]    ].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
+                                           [p->pos[dim_x]    ].hn);
+    }
+    //checking position 2: x-1 (West)
+    if ((path[p->pos[dim_y]    ][p->pos[dim_x] - 1].hn) &&
+        (path[p->pos[dim_y]    ][p->pos[dim_x] - 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y]    ][p->pos[dim_x] - 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y]    ]
+                                           [p->pos[dim_x] - 1].hn);
+    }
+    //checking position 3: x+1 (East)
+    if ((path[p->pos[dim_y]    ][p->pos[dim_x] + 1].hn) &&
+        (path[p->pos[dim_y]    ][p->pos[dim_x] + 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y]    ][p->pos[dim_x] + 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y]    ]
+                                           [p->pos[dim_x] + 1].hn);
+    }
+    //checking position 4: y+1 (South)
+    if ((path[p->pos[dim_y] + 1][p->pos[dim_x]    ].hn) &&
+        (path[p->pos[dim_y] + 1][p->pos[dim_x]    ].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] + 1][p->pos[dim_x]    ].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
+                                           [p->pos[dim_x]    ].hn);
+    }
+    //checking position 5: y-1, x-1 (North-West)
+    if ((path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].hn) &&
+        (path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
+                                           [p->pos[dim_x] - 1].hn);
+    }
+    //checking position 6: y-1, x+1 (North-East)
+    if ((path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].hn) &&
+        (path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1]
+                                           [p->pos[dim_x] + 1].hn);
+    }
+    //checking position 7: y+1, x+1 (South-East)
+    if ((path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].hn) &&
+        (path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
+                                           [p->pos[dim_x] + 1].hn);
+    }
+    //checking position 8: y+1, x-1 (South-West)
+    if ((path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].hn) &&
+        (path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost >
+         p->cost + costToAdd)) {
+      path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost = p->cost + costToAdd;
+      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1]
+                                           [p->pos[dim_x] - 1].hn);
+    }
+  }
+
+  //using a value to track pc to print '@'
+  path[d->pc[dim_y]][d->pc[dim_x]].cost = -1;
+  //printing the map of cost for monsters that can go through world
+  int i,j;
+  for(i = 0; i < DUNGEON_Y; ++i){
+    for(j = 0; j < DUNGEON_X; ++j){
+      if(path[i][j].cost == -1){
+	printf("%c", '@');
+      }
+      else {
+	printf("%d", (path[i][j].cost % 10));
+      }
+    }
+    printf("\n");
+  }
+}
+
+
+
 int main(int argc, char *argv[])
 {
   dungeon_t d;
@@ -1230,6 +1502,16 @@ int main(int argc, char *argv[])
   d.map[d.pc[dim_y]][d.pc[dim_x]] = ter_pc;
 
   render_dungeon(&d);
+
+  //generate dungeon with path for monsters with no rocks digging ability
+  dijkstra_no_rock_monster_path(&d);
+  
+  printf("\n");
+  printf("\n");
+  printf("\n");
+
+  //generate dungeon with path for monsters
+  dijkstra_monster_path(&d);
 
   if (do_save) {
     if (do_save_seed) {
