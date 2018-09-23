@@ -1,0 +1,9 @@
+Homework 1.02
+Author: Nicolas De la Cruz
+Course: Compute Science 327
+
+This program uses switch arguments to load and save games. 
+There is also a third switch ("--load --save") that loads the game then saves it.
+The additional functionality of load is done by reading the binary file and converting all the values to usable map information, then printing it out.
+
+The additional functionality of save is done by writing the map information to a file in the hidden directory "./rlg327", this file is written in big endian format.

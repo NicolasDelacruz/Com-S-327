@@ -1,0 +1,33 @@
+Assignment: 1.03
+Date created: 09/23/18
+
+Author: Nicolas De la Cruz
+
+Notes:
+-Used Jeremy Sheaffer's assignment 1.02 solution, and built off that solution.
+
+Description:
+This program uses Djikstra's algorithm and heaps to generate paths for the two types of monsters.
+Tunnel Monsters:
+-Monster that tunnel through walls
+
+Non-tunnel monsters:
+-Monsters that can only move through open space
+
+This algorithm will first display the generated map (like previous versions), then display the non-tunnel monster's path map, and lastly the tunnel-monster's path map.
+
+The following describes what logic was used to configure the order of path (when sending to heap):
+
+Things to note (all monsters):
+-8 way pathings (N, NE, E, SE, S, SW, W, NW)
+
+Non-tunnel monsters:
+-ignore walls, this will keep path within rooms an corridor
+-all floors have weight of 1
+
+Tunnel monsters:
+-cells with a hardness of 0 have a weight of 1
+-cells with hardnesses in range [1, 254] have weights of hardness / 85
+
+
+Through these requirements and using Dijkstra's algorithm and heaps the reulting 2 maps are generated.

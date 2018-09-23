@@ -1,0 +1,125 @@
+commit 522734f8e1bb0b08305da3f2f97ab5189f3bf1ad
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 12 14:11:53 2018 -0500
+
+    Fully functioning program to use switches as parameters. Just need to zip this homework into a tar file.
+
+commit 886edf9369c29348c23d8efbb0e8324df1a52cf8
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 12 00:05:10 2018 -0500
+
+    In this commit the save and load are fully implemented. Still need to implement --load --save.
+
+commit 4209e419c50d058f1b77b8c610afeb4611719f53
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Sep 11 15:17:24 2018 -0500
+
+    In this commit the load is implemented. NOT fully functioning, debugging is needed.
+
+commit d23a6a1fadf8f97081f2efb72e3b443ff6420cac
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 9 21:24:18 2018 -0500
+
+    In this commit the --save switch was implemented. --load switch to be implemented.
+
+commit 91a1d05a33899b14ba581dbce32b87a47a73e35b
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 9 15:52:27 2018 -0500
+
+    First commit for homework 1.02. In this commit I used Professor Sheaffer's solution to homework 1.01. Current status: all switches are functioning.
+
+commit 51b25b4dde159ace16e8070dfc79a67301345899
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 5 09:00:55 2018 -0500
+
+    Created the tar file out of all existing files from previous commit.
+
+commit 388f24cc725c8ddf8d3e53f1ad460086e6fdef60
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 5 08:40:47 2018 -0500
+
+    In this commit the program has all the files needed to turn in.
+
+commit 7e18a8e9ca776a5b3da3043b76123b7df3fae2ed
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Sep 4 22:39:48 2018 -0500
+
+    In this commit the homework1.c file is fully commented and working.
+
+commit cb038a4c800866c09612cdf183cc91c3823453bb
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Sep 4 19:23:13 2018 -0500
+
+    Fully functioning program that concludes assignment 1.
+
+commit 657eb73549a3ac6b4f372b7319057894e5903371
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Mon Sep 3 20:11:11 2018 -0500
+
+    In this commit the program is able to add all 5 VALID rooms. The rooms are atleaast one space apart and do not go into the border
+
+commit 6b35f344349da731cee5e0e68acd6f3089b7e3ba
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Mon Sep 3 16:31:29 2018 -0500
+
+    In this commit, the program is able to generate 5 doors. (No restriction on where they are supposed to be)
+
+commit f47ed46db63bd09e55b7d5a108bb7adbbb70f313
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 1 23:54:58 2018 -0500
+
+    Able to generate 1 door, random size and random location.
+
+commit d49506f391a25665592847a3d2b7c7ad8de5a036
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 1 18:19:48 2018 -0500
+
+    Created the map, and is able to print it
+
+commit e2c8813849bfc50db445bc9030761fb6f99f562c
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 1 15:34:55 2018 -0500
+
+    Homework 0 directory clean up
+
+commit caa639efa600ee72209cd6a09f8f59d24aff4e6f
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Aug 28 21:54:17 2018 -0500
+
+    Working version, and shorter/cleaner
+
+commit 1a53332cb39acf7e467509592daf4ce7bdfb415d
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 19:36:49 2018 -0500
+
+    Fully implemented version of homework, NOT FUNCTIONING appropriately. Needs debugging.
+
+commit 8aa8533790d228caaa9fa89e9c386b5a12225fda
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 12:39:28 2018 -0500
+
+    Implemented basic structure of the project for homework 1, but not all functions are fully implemented.
+
+commit f9c4ed4f138b110dd8cc39a4c231504e074ac0a0
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 09:29:09 2018 -0500
+
+    updating homework 0
+
+commit beae73808452ddef27a0702b8f9114142ab90130
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 09:07:57 2018 -0500
+
+    removed test file, hello.c
+
+commit 7ded2b6d29e7a7776757dfd07fb041adb8a57339
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 09:06:49 2018 -0500
+
+    Adding test file, hello.c
+
+commit 57863f11290662fb518c29f696538bf20b35d331
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Aug 25 19:32:30 2018 -0500
+
+    Initial commit
