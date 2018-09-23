@@ -1,3 +1,28 @@
+commit 08a8775dfb9e7e011664845ba07145fac34bf94c
+Merge: 588ff50 4eb42d2
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 23 15:01:46 2018 -0500
+
+    Merge branch 'master' of https://github.com/NicolasDelacruz/Com-S-327
+
+commit 588ff505d8b4d0c8f94bee3d36f5522b4b74a31f
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 23 15:01:00 2018 -0500
+
+    In this commit the README and CHANGELOG files have been added to project. Homework ready for submission.
+
+commit 4eb42d23a1f16b2c7e79186a74f454de2b09c5a6
+Author: Nicolas <nicolasd@iastate.edu>
+Date:   Sun Sep 16 13:59:42 2018 -0500
+
+    Homework is completed. Need to go back to comment and clean up code.
+
+commit 0310a30c7f835814fc50333e4fcac3551c6a5a05
+Author: Nicolas <nicolasd@iastate.edu>
+Date:   Sun Sep 16 09:59:16 2018 -0500
+
+    First commit to create homework 1.03. Part one of homework is done, placing pc.
+
 commit 522734f8e1bb0b08305da3f2f97ab5189f3bf1ad
 Author: NicolasDelacruz <nicolasd@iastate.edu>
 Date:   Wed Sep 12 14:11:53 2018 -0500
