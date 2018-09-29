@@ -497,6 +497,8 @@ static int empty_dungeon(dungeon_t *d)
         mapxy(x, y) = ter_wall_immutable;
         hardnessxy(x, y) = 255;
       }
+      d->monster[y][x].type = ' ';
+      d->monster[y][x].id  = 0;
     }
   }
 
@@ -584,7 +586,11 @@ void render_dungeon(dungeon_t *d){
       if (p[dim_x] ==  d->pc.position[dim_x] &&
           p[dim_y] ==  d->pc.position[dim_y]) {
         putchar('@');
-      } else {
+      } 
+      else if(d->monster[p[dim_y]][p[dim_x]].id > 0 && d->monster[p[dim_y]][p[dim_x]].id < 17){
+	putchar(d->monster[p[dim_y]][p[dim_x]].type);
+      }
+      else {
         switch (mappair(p)) {
         case ter_wall:
         case ter_wall_immutable:
@@ -1084,5 +1090,86 @@ void render_tunnel_distance_map(dungeon_t *d)
       }
     }
     putchar('\n');
+  }
+}
+
+
+void place_monsters(dungeon_t *d, uint32_t num_monsters){
+  uint8_t i,x, y, speed, id, number_of_monsters;
+  if(num_monsters <= 0|| num_monsters > 100){
+    number_of_monsters = 10;
+  }else{
+    number_of_monsters = num_monsters;
+  }
+
+
+  for(i = 0; i < number_of_monsters; ++i){
+    x = (rand() % 77) +1;
+    y = (rand() % 18) +1;
+
+    while(d->map[y][x] == ter_floor_room || d->map[y][x] == ter_floor_hall){
+      x = (rand() % 77) +1;
+      y = (rand() % 18) +1;
+    }
+
+
+    id = rand() % 16;
+    speed = (rand() % 15)+5;
+
+    d->monster[y][x].id = id;
+    d->monster[y][x].speed = speed;
+    d->monster[y][x].x = x;
+    d->monster[y][x].y = y;
+
+    switch (id) {
+    case 1:
+      d->monster[y][x].type = 'a';
+      break;
+    case 2:
+      d->monster[y][x].type = 'b';
+      break;
+    case 3:
+      d->monster[y][x].type = 'c';
+      break;
+    case 4:
+      d->monster[y][x].type = 'd';
+      break;
+    case 5:
+      d->monster[y][x].type = 'e';
+      break;
+    case 6:
+      d->monster[y][x].type = 'f';
+      break;
+    case 7:
+      d->monster[y][x].type = 'g';
+      break;
+    case 8:
+      d->monster[y][x].type = 'h';
+      break;
+    case 9:
+      d->monster[y][x].type = 'i';
+      break;
+    case 10:
+      d->monster[y][x].type = 'j';
+      break;
+    case 11:
+      d->monster[y][x].type = 'k';
+      break;
+    case 12:
+      d->monster[y][x].type = 'l';
+      break;
+    case 13:
+      d->monster[y][x].type = 'm';
+      break;
+    case 14:
+      d->monster[y][x].type = 'n';
+      break;
+    case 15:
+      d->monster[y][x].type = 'o';
+      break;
+    case 16:
+      d->monster[y][x].type = 'p';
+      break;
+    }
   }
 }

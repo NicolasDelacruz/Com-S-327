@@ -41,6 +41,11 @@ typedef struct pc {
   pair_t position;
 } pc_t;
 
+typedef struct monster {;
+  uint8_t speed, id, x, y; //only need to count to max 20
+  char type;
+} monster_t;
+
 typedef struct dungeon {
   uint32_t num_rooms;
   room_t *rooms;
@@ -57,6 +62,7 @@ typedef struct dungeon {
   uint8_t pc_distance[DUNGEON_Y][DUNGEON_X];
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
   pc_t pc;
+  monster_t monster[DUNGEON_Y][DUNGEON_X];
 } dungeon_t;
 
 void init_dungeon(dungeon_t *d);
@@ -70,5 +76,6 @@ void render_distance_map(dungeon_t *d);
 void render_tunnel_distance_map(dungeon_t *d);
 void render_hardness_map(dungeon_t *d);
 void render_movement_cost_map(dungeon_t *d);
+void place_monsters(dungeon_t *d, uint32_t num_monsters);
 
 #endif

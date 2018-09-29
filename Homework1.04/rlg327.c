@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
   time_t seed;
   struct timeval tv;
   uint32_t i;
-  uint32_t do_load, do_save, do_seed, do_image, do_save_seed, do_save_image;
+  uint32_t do_load, do_save, do_seed, do_image, do_save_seed, do_save_image, num_monsters;
   uint32_t long_arg;
   char *save_file;
   char *load_file;
@@ -115,6 +115,17 @@ int main(int argc, char *argv[])
             pgm_file = argv[++i];
           }
           break;
+	case 'n':
+	  if ((!long_arg && argv[i][2]) ||
+              (long_arg && strcmp(argv[i], "-nummon"))) {
+            usage(argv[0]);
+          }
+	  printf("In switch \n");
+          if ((argc > i + 1) && argv[i + 1][0] != '-') {
+	    sscanf(argv[i+1],"%u", &num_monsters);
+	    printf("Number of mosters: %u \n", num_monsters);
+          }
+	  break;
         default:
           usage(argv[0]);
         }
@@ -154,6 +165,8 @@ int main(int argc, char *argv[])
 
   printf("PC is at (y, x): %d, %d\n",
          d.pc.position[dim_y], d.pc.position[dim_x]);
+
+  place_monsters(&d, num_monsters);
 
   render_dungeon(&d);
 
