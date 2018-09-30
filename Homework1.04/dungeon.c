@@ -19,6 +19,11 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
+typedef struct game_turn_generator {
+  heap_node_t *hn;
+  uint8_t turn;
+} game_turn_t;
+
 static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
 {
   return (mapxy(x - 1, y) == ter_floor_room ||
@@ -31,6 +36,11 @@ static uint32_t is_open_space(dungeon_t *d, int16_t y, int16_t x)
 {
   return !hardnessxy(x, y);
 }
+
+static int32_t move_cmp(const void *key, const void *with) {
+  return ((monster_t *) key)->turn - ((monster_t *) with)->turn;
+}
+
 
 static int32_t corridor_path_cmp(const void *key, const void *with) {
   return ((corridor_path_t *) key)->cost - ((corridor_path_t *) with)->cost;
@@ -622,6 +632,7 @@ void delete_dungeon(dungeon_t *d)
 void init_dungeon(dungeon_t *d)
 {
   empty_dungeon(d);
+  d->game_over = 'n';
 }
 
 int write_dungeon_map(dungeon_t *d, FILE *f)
@@ -1116,6 +1127,7 @@ void place_monsters(dungeon_t *d, uint32_t num_monsters){
     d->monster[y][x].speed = speed;
     d->monster[y][x].x = x;
     d->monster[y][x].y = y;
+    d->monster[y][x].turn = 0;
 
     switch (id) {
     case 1:
@@ -1169,3 +1181,71 @@ void place_monsters(dungeon_t *d, uint32_t num_monsters){
     }
   }
 }
+
+void print_game_status(dungeon_t *d){
+  printf("\n \n \n");
+  printf("***************************************************************\n");
+  printf("***************************************************************\n");
+  
+  if(d->win_loss == 'l'){
+    printf("***************************LOSS********************************\n");
+  } else{
+    printf("***************************WIN*********************************\n");
+  }
+
+  printf("***************************************************************\n");
+  printf("***************************************************************\n");
+}
+
+void move(dungeon_t *d, heap_t* heap){
+   monster_t *to_move;
+
+   //get next turn
+   to_move = heap_remove_min(&heap);
+
+   printf("%c \n", to_move->type);
+}
+
+void start_game(dungeon_t *d){
+  
+  //creating instance of heap
+  heap_t h;
+
+  //init heap
+  heap_init(&h, move_cpm, NULL);
+
+  //insert pc
+  heap_insert(&h, monster[d.pc.position[dim_y]][d.pc.position[dim_x]]);
+
+  //place all monsters
+  int i, j;
+  for(i = 0; i < 21; ++i){
+    for(j = 0; j < 80; ++i){
+      if(d->monster[i][j].id > 0 && d->monster[i][j].id < 16){
+	heap_insert(h, monster[i][j]);
+      }
+    }
+  }
+
+  //moving characters
+  while(d.game_over == 'n'){
+    //remove top heap
+    move(&d, &h);
+
+    //move the position of that heap that was removed
+
+    //render_dungeon(&d);//will be moved inside move function
+    
+    if(heap_peek_min == NULL){
+      printf("Inside line 213");
+      d.game_over = 'y';//will be moved somewhere else that checks if win or loss and update d.win_loss
+    }
+  }
+  
+  d.win_loss = 'w'; //will be moved to different function that checks if won or loss
+  print_game_status(&d);
+  
+}
+
+
+

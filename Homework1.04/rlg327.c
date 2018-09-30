@@ -158,11 +158,18 @@ int main(int argc, char *argv[])
   }
 
   if (!do_load) {
+    int x = d.rooms[0].position[dim_x] + (rand() % d.rooms[0].size[dim_x]);
+
+    int y = d.rooms[0].position[dim_y] + (rand() % d.rooms[0].size[dim_y]);
     /* Set a valid position for the PC */
-    d.pc.position[dim_x] = (d.rooms[0].position[dim_x] +
-                            (rand() % d.rooms[0].size[dim_x]));
-    d.pc.position[dim_y] = (d.rooms[0].position[dim_y] +
-                            (rand() % d.rooms[0].size[dim_y]));
+    d.pc.position[dim_x] = x;
+    d.pc.position[dim_y] = y;
+
+    d.monster[y][x].x = x;
+    d.monster[y][x].y = y;
+    d.monster[y][x].speed = 10;
+    d.monster[y][x].id = 0;
+    d.monster[y][x].turn = 0;
   }
 
   if (do_monsters) {
@@ -170,9 +177,11 @@ int main(int argc, char *argv[])
   }
 
   printf("PC is at (y, x): %d, %d\n",
-         d.pc.position[dim_y], d.pc.position[dim_x]);
+         d.pc.position[dim_y], d.pc.position[dim_x]);;
 
   render_dungeon(&d);
+
+  start_game(&d);
 
   dijkstra(&d);
   dijkstra_tunnel(&d);
