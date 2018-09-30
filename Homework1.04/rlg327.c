@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
   time_t seed;
   struct timeval tv;
   uint32_t i;
-  uint32_t do_load, do_save, do_seed, do_image, do_save_seed, do_save_image, num_monsters;
+  uint32_t do_load, do_save, do_seed, do_image, do_save_seed, do_save_image, do_monsters, num_monsters;
   uint32_t long_arg;
   char *save_file;
   char *load_file;
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
   
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */
-  do_load = do_save = do_image = do_save_seed = do_save_image = 0;
+  do_load = do_save = do_image = do_save_seed = do_save_image = do_monsters = 0;
   do_seed = 1;
   save_file = load_file = NULL;
 
@@ -116,15 +116,17 @@ int main(int argc, char *argv[])
           }
           break;
 	case 'n':
-	  if ((!long_arg && argv[i][2]) ||
-              (long_arg && strcmp(argv[i], "-nummon"))) {
-            usage(argv[0]);
-          }
 	  printf("In switch \n");
           if ((argc > i + 1) && argv[i + 1][0] != '-') {
-	    sscanf(argv[i+1],"%u", &num_monsters);
+	    sscanf(argv[++i],"%u", &num_monsters);
 	    printf("Number of mosters: %u \n", num_monsters);
           }
+	  else{
+	    num_monsters = 10;
+	    printf("Number of mosters: %u \n", num_monsters);
+	  }
+
+	  do_monsters = 1;
 	  break;
         default:
           usage(argv[0]);
@@ -151,7 +153,7 @@ int main(int argc, char *argv[])
     read_dungeon(&d, load_file);
   } else if (do_image) {
     read_pgm(&d, pgm_file);
-  } else {
+  }  else {
     gen_dungeon(&d);
   }
 
@@ -163,19 +165,21 @@ int main(int argc, char *argv[])
                             (rand() % d.rooms[0].size[dim_y]));
   }
 
+  if (do_monsters) {
+    place_monsters(&d, num_monsters);
+  }
+
   printf("PC is at (y, x): %d, %d\n",
          d.pc.position[dim_y], d.pc.position[dim_x]);
-
-  place_monsters(&d, num_monsters);
 
   render_dungeon(&d);
 
   dijkstra(&d);
   dijkstra_tunnel(&d);
-  render_distance_map(&d);
-  render_tunnel_distance_map(&d);
-  render_hardness_map(&d);
-  render_movement_cost_map(&d);
+  //render_distance_map(&d);
+  //render_tunnel_distance_map(&d);
+  //render_hardness_map(&d);
+  //render_movement_cost_map(&d);
 
   if (do_save) {
     if (do_save_seed) {

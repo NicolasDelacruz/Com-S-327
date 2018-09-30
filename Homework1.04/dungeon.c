@@ -1096,18 +1096,14 @@ void render_tunnel_distance_map(dungeon_t *d)
 
 void place_monsters(dungeon_t *d, uint32_t num_monsters){
   uint8_t i,x, y, speed, id, number_of_monsters;
-  if(num_monsters <= 0|| num_monsters > 100){
-    number_of_monsters = 10;
-  }else{
-    number_of_monsters = num_monsters;
-  }
+  number_of_monsters = num_monsters;
 
 
   for(i = 0; i < number_of_monsters; ++i){
     x = (rand() % 77) +1;
     y = (rand() % 18) +1;
 
-    while(d->map[y][x] == ter_floor_room || d->map[y][x] == ter_floor_hall){
+    while(d->map[y][x] != ter_floor_room &&  d->map[y][x] != ter_floor_hall){
       x = (rand() % 77) +1;
       y = (rand() % 18) +1;
     }
