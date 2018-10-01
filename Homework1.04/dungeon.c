@@ -19,10 +19,6 @@ typedef struct corridor_path {
   int32_t cost;
 } corridor_path_t;
 
-typedef struct game_turn_generator {
-  heap_node_t *hn;
-  uint8_t turn;
-} game_turn_t;
 
 static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
 {
@@ -1120,7 +1116,7 @@ void place_monsters(dungeon_t *d, uint32_t num_monsters){
     }
 
 
-    id = rand() % 16;
+    id = (rand() % 15)+1;
     speed = (rand() % 15)+5;
 
     d->monster[y][x].id = id;
@@ -1128,6 +1124,7 @@ void place_monsters(dungeon_t *d, uint32_t num_monsters){
     d->monster[y][x].x = x;
     d->monster[y][x].y = y;
     d->monster[y][x].turn = 0;
+    printf("Monster %d. ID: %d, Speed: %d\n", i, id, speed);
 
     switch (id) {
     case 1:
@@ -1197,14 +1194,23 @@ void print_game_status(dungeon_t *d){
   printf("***************************************************************\n");
 }
 
-void move(dungeon_t *d, heap_t* heap){
-   monster_t *to_move;
 
-   //get next turn
-   to_move = heap_remove_min(&heap);
 
-   printf("%c \n", to_move->type);
+void move_character(dungeon_t *d, heap_t *heap){
+  monster_t *to_move;
+
+  //get next turn
+  to_move = heap_remove_min(heap);
+  printf("Before turn: %d, type: %c\n", to_move->turn, to_move->type);
+
+  to_move->turn = 1000/to_move->speed;
+  printf("After turn: %d, type: %c\n", to_move->turn, to_move->type);
+
+  heap_insert(heap, to_move);
+
+  printf("%c \n", to_move->type);
 }
+
 
 void start_game(dungeon_t *d){
   
@@ -1212,38 +1218,31 @@ void start_game(dungeon_t *d){
   heap_t h;
 
   //init heap
-  heap_init(&h, move_cpm, NULL);
+  heap_init(&h, move_cmp, NULL);
 
   //insert pc
-  heap_insert(&h, monster[d.pc.position[dim_y]][d.pc.position[dim_x]]);
+  heap_insert(&h, &d->monster[d->pc.position[dim_y]][d->pc.position[dim_x]]);
 
   //place all monsters
   int i, j;
   for(i = 0; i < 21; ++i){
-    for(j = 0; j < 80; ++i){
-      if(d->monster[i][j].id > 0 && d->monster[i][j].id < 16){
-	heap_insert(h, monster[i][j]);
+    for(j = 0; j < 80; ++j){
+      if(d->monster[i][j].id > 0 && d->monster[i][j].id < 17){
+	heap_insert(&h, &d->monster[i][j]);
       }
     }
   }
 
-  //moving characters
-  while(d.game_over == 'n'){
-    //remove top heap
-    move(&d, &h);
-
-    //move the position of that heap that was removed
-
-    //render_dungeon(&d);//will be moved inside move function
-    
-    if(heap_peek_min == NULL){
-      printf("Inside line 213");
-      d.game_over = 'y';//will be moved somewhere else that checks if win or loss and update d.win_loss
-    }
+  for(i = 0; i < 22; ++i){
+    move_character(d, &h);
   }
   
-  d.win_loss = 'w'; //will be moved to different function that checks if won or loss
-  print_game_status(&d);
+  /*
+  while(d.game_over == 'n'){
+    move(&h);
+  }
+  */
+  d->win_loss = 'w'; //will be moved to different function that checks if won or loss
   
 }
 

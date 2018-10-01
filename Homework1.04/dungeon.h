@@ -45,7 +45,6 @@ typedef struct pc {
 typedef struct monster_type {
   uint8_t speed, id, x, y, turn; //only need to count to max 20
   char type;
-  heap_node_t *hn;
 } monster_t;
 
 typedef struct dungeon {

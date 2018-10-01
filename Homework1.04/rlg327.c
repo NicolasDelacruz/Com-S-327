@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 	    printf("Number of mosters: %u \n", num_monsters);
           }
 	  else{
-	    num_monsters = 10;
+	    num_monsters = 11;
 	    printf("Number of mosters: %u \n", num_monsters);
 	  }
 
@@ -168,8 +168,9 @@ int main(int argc, char *argv[])
     d.monster[y][x].x = x;
     d.monster[y][x].y = y;
     d.monster[y][x].speed = 10;
-    d.monster[y][x].id = 0;
+    d.monster[y][x].id = 17;
     d.monster[y][x].turn = 0;
+    d.monster[y][x].type = '@';
   }
 
   if (do_monsters) {
@@ -182,6 +183,8 @@ int main(int argc, char *argv[])
   render_dungeon(&d);
 
   start_game(&d);
+
+  print_game_status(&d);
 
   dijkstra(&d);
   dijkstra_tunnel(&d);
