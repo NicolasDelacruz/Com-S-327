@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 	    printf("Number of mosters: %u \n", num_monsters);
           }
 	  else{
-	    num_monsters = 11;
+	    num_monsters = 10;
 	    printf("Number of mosters: %u \n", num_monsters);
 	  }
 

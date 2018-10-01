@@ -1221,13 +1221,13 @@ void start_game(dungeon_t *d){
   heap_init(&h, move_cmp, NULL);
 
   //insert pc
-  heap_insert(&h, &d->monster[d->pc.position[dim_y]][d->pc.position[dim_x]]);
+  //heap_insert(&h, &d->monster[d->pc.position[dim_y]][d->pc.position[dim_x]]);
 
   //place all monsters
   int i, j;
   for(i = 0; i < 21; ++i){
     for(j = 0; j < 80; ++j){
-      if(d->monster[i][j].id > 0 && d->monster[i][j].id < 17){
+      if(d->monster[i][j].id > -1 && d->monster[i][j].id < 17){
 	heap_insert(&h, &d->monster[i][j]);
       }
     }
@@ -1243,6 +1243,7 @@ void start_game(dungeon_t *d){
   }
   */
   d->win_loss = 'w'; //will be moved to different function that checks if won or loss
+  //test test
   
 }
 
