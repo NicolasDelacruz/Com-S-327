@@ -1194,21 +1194,31 @@ void print_game_status(dungeon_t *d){
   printf("***************************************************************\n");
 }
 
-
+monster_t *to_move;
 
 void move_character(dungeon_t *d, heap_t *heap){
-  monster_t *to_move;
-
   //get next turn
   to_move = heap_remove_min(heap);
+
   printf("Before turn: %d, type: %c\n", to_move->turn, to_move->type);
 
-  to_move->turn = 1000/to_move->speed;
-  printf("After turn: %d, type: %c\n", to_move->turn, to_move->type);
+  //creating a new heap to insert
+  monster_t *new_move = (monster_t*) malloc(sizeof(monster_t));
 
-  heap_insert(heap, to_move);
+  //updating the heap with previously removed values
+  new_move->speed = to_move->speed;
+  new_move->type = to_move->type;
+  new_move->x = to_move->x;
+  new_move->y = to_move->y;
+  new_move->id = to_move->id;
+  new_move->turn += 1000/new_move->speed;
 
-  printf("%c \n", to_move->type);
+
+  heap_insert(heap, &new_move);
+
+  printf("After turn: %d, type: %c\n", new_move->turn, new_move->type);
+
+  printf("%c \n", new_move->type);
 }
 
 
@@ -1221,13 +1231,13 @@ void start_game(dungeon_t *d){
   heap_init(&h, move_cmp, NULL);
 
   //insert pc
-  //heap_insert(&h, &d->monster[d->pc.position[dim_y]][d->pc.position[dim_x]]);
+  heap_insert(&h, &d->monster[d->pc.position[dim_y]][d->pc.position[dim_x]]);
 
   //place all monsters
-  int i, j;
+git  int i, j;
   for(i = 0; i < 21; ++i){
     for(j = 0; j < 80; ++j){
-      if(d->monster[i][j].id > -1 && d->monster[i][j].id < 17){
+      if(d->monster[i][j].id > 0 && d->monster[i][j].id < 17){
 	heap_insert(&h, &d->monster[i][j]);
       }
     }
@@ -1243,9 +1253,6 @@ void start_game(dungeon_t *d){
   }
   */
   d->win_loss = 'w'; //will be moved to different function that checks if won or loss
-  //test test
   
 }
-
-
 

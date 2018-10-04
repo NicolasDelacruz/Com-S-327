@@ -1,0 +1,28 @@
+Author: Nicolas De la Cruz
+
+Credit: Jeremy Scheaffer
+
+Program description of how it SHOULD work:
+In this program I used the solution for homework 1.03. 
+This program's purpose is to generate an input number of monsters using a new switch "--nummon" following an integer as an input or 10 by default.
+After monsters are generated they are assigned the following:
+*speed: random between 10-20
+*turn: 0
+*id: random between 1-16
+
+There are 4 characteristic:
+Intelligent: understand the dungeon layout and move on the shortest path (as
+per path finding) toward the PC
+Telepathic: always know where the PC is. Non-telepathic monsters only know
+the position of the PC if they have line of sight (smart ones can remember the position where they
+last saw the PC when line of sight is broken).
+Tunnelling: can tunnel through rock.
+Erotic: have a 50% chance of moving as per their other characteristics.
+
+Those 4 types created 16 possibilities, hence 1-16 for ID.
+
+As monsters and PC took their turn the 'turn' attribute was updated with + (1000/speed). The monster or pc with lowest turn went next, this keeps going until pc kills last monster or monster kills pc.
+
+UNFORTUNATELY, the heap was not working and not letting the monsters move, everything else should work ecept the monsters cannot move because the heap is not working appropriately.
+
+ 
