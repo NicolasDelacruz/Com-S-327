@@ -110,38 +110,42 @@ void do_moves(dungeon_t *d, int cmd)
     //mappair(next) = ter_floor_hall;
     //}
 
+
+    next[dim_x] = c->position[dim_x];
+    next[dim_y] = c->position[dim_y];
+
     // moving pc to...
     // top-left
     if (cmd == 'y' || cmd == '7'){
-      move_pc(d, c, -1, -1);
+      move_pc(d, c, next, -1, -1);
     }
     // top
     else if (cmd == 'k' || cmd == '8'){
-      move_pc(d, c, -1, 0);
+      move_pc(d, c, next, -1, 0);
     }
     // top-right
     else if (cmd == 'u' || cmd == '9'){
-      move_pc(d, c, -1, 1);
+      move_pc(d, c, next, -1, 1);
     }
     // right
     else if (cmd == 'l' || cmd == '6'){
-      move_pc(d, c, 0, 1);
+      move_pc(d, c, next, 0, 1);
     }
     // bot-right
     else if (cmd == 'n' || cmd == '3'){
-      move_pc(d, c, 1, 1);
+      move_pc(d, c, next, 1, 1);
     }
     // bot
     else if (cmd == 'j' || cmd == '2'){
-      move_pc(d, c, 1, 0);
+      move_pc(d, c, next, 1, 0);
     }
     // bot-left
     else if (cmd == 'b' || cmd == '1'){
-      move_pc(d, c, 1, -1);
+      move_pc(d, c, next, 1, -1);
     }
     // left
     else if (cmd == 'h' || cmd == '4'){
-      move_pc(d, c, 0, -1);
+      move_pc(d, c, next, 0, -1);
     }
 
     //move_character(d, c, next);
@@ -193,11 +197,25 @@ uint32_t in_corner(dungeon_t *d, character_t *c)
   return num_immutable > 1;
 }
 
-uint32_t move_pc(dungeon_t *d, character_t *c, int giveny, int givenx)
+uint32_t move_pc(dungeon_t *d, character_t *c, pair_t next, int giveny, int givenx)
 {
-  d->character[c->position[dim_y]][c->position[dim_x]] = NULL;
-  c->position[dim_y] += giveny;
-  c->position[dim_x] += givenx;
-  d->character[c->position[dim_y]][c->position[dim_x]] = c;
+  next[dim_y] += giveny;
+  next[dim_x] += givenx;
+
+  move_character(d, c, next);
+  
+  /*
+  if (charpair(next) &&
+      ((next[dim_y] != c->position[dim_y]) ||
+       (next[dim_x] != c->position[dim_x]))) {
+    do_combat(d, c, charpair(next));
+  } else {
+   /* No character in new position. 
+
+    d->character[c->position[dim_y]][c->position[dim_x]] = NULL;
+    c->position[dim_y] += giveny;
+    c->position[dim_x] += givenx;
+    d->character[c->position[dim_y]][c->position[dim_x]] = c;
+  }*/
   return 1;
 }
