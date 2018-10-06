@@ -103,6 +103,7 @@ void do_moves(dungeon_t *d, int cmd)
      * and recreated every time we leave and re-enter this function.    */
     e->c = NULL;
     event_delete(e);
+    
     //pc_next_pos(d, next);
     //next[dim_x] += c->position[dim_x];
     //next[dim_y] += c->position[dim_y];
@@ -146,6 +147,16 @@ void do_moves(dungeon_t *d, int cmd)
     // left
     else if (cmd == 'h' || cmd == '4'){
       move_pc(d, c, next, 0, -1);
+    }
+    else if (cmd == '<'){
+      if(d->map[next[dim_y]][next[dim_x]] == ter_floor_up){
+	move_pc(d, c, next, 0, 1);
+      }
+    }
+    else if (cmd == '>'){
+      if(d->map[next[dim_y]][next[dim_x]] == ter_floor_down){
+	move_pc(d, c, next, 0, 1);
+      }
     }
 
     //move_character(d, c, next);
@@ -202,20 +213,8 @@ uint32_t move_pc(dungeon_t *d, character_t *c, pair_t next, int giveny, int give
   next[dim_y] += giveny;
   next[dim_x] += givenx;
 
-  move_character(d, c, next);
-  
-  /*
-  if (charpair(next) &&
-      ((next[dim_y] != c->position[dim_y]) ||
-       (next[dim_x] != c->position[dim_x]))) {
-    do_combat(d, c, charpair(next));
-  } else {
-   /* No character in new position. 
-
-    d->character[c->position[dim_y]][c->position[dim_x]] = NULL;
-    c->position[dim_y] += giveny;
-    c->position[dim_x] += givenx;
-    d->character[c->position[dim_y]][c->position[dim_x]] = c;
-  }*/
+  if(d->map[next[dim_y]][next[dim_x]] != ter_wall && d->map[next[dim_y]][next[dim_x]] != ter_wall_immutable && d->map[next[dim_y]][next[dim_x]]!= ter_floor){
+    move_character(d, c, next);
+  }
   return 1;
 }

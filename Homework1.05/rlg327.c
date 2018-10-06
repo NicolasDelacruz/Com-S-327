@@ -227,7 +227,7 @@ int main(int argc, char *argv[])
   while (pc_is_alive(&d) && dungeon_has_npcs(&d) && command != 'q') {
     render_dungeon(&d);
     command = getch();
-    run_command(&d, command);
+    do_moves(&d, command);
   }
   endwin();
   //----------------------------------------------------------------------------------------
