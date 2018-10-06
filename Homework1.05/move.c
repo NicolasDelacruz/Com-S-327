@@ -150,12 +150,12 @@ void do_moves(dungeon_t *d, int cmd)
     }
     else if (cmd == '<'){
       if(d->map[next[dim_y]][next[dim_x]] == ter_floor_up){
-	move_pc(d, c, next, 0, 1);
+	go_up_down_stairs(d);
       }
     }
     else if (cmd == '>'){
       if(d->map[next[dim_y]][next[dim_x]] == ter_floor_down){
-	move_pc(d, c, next, 0, 1);
+	go_up_down_stairs(d);
       }
     }
 
@@ -217,4 +217,17 @@ uint32_t move_pc(dungeon_t *d, character_t *c, pair_t next, int giveny, int give
     move_character(d, c, next);
   }
   return 1;
+}
+
+void go_up_down_stairs(dungeon_t *d){
+  delete_dungeon(d);
+
+  init_dungeon(d);
+  gen_dungeon(d);
+  
+  config_pc(d);
+  gen_monsters(d);
+
+  render_dungeon(d);
+
 }
