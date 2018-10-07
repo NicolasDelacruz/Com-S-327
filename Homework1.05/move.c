@@ -148,6 +148,9 @@ void do_moves(dungeon_t *d, int cmd)
     else if (cmd == 'h' || cmd == '4'){
       move_pc(d, c, next, 0, -1);
     }
+    else if (cmd == '5' || cmd == ' '){
+      move_pc(d,c, next, 0, 0);
+    }
     else if (cmd == '<'){
       if(d->map[next[dim_y]][next[dim_x]] == ter_floor_up){
 	go_up_down_stairs(d);
@@ -157,6 +160,9 @@ void do_moves(dungeon_t *d, int cmd)
       if(d->map[next[dim_y]][next[dim_x]] == ter_floor_down){
 	go_up_down_stairs(d);
       }
+    }
+    else{
+      
     }
 
     //move_character(d, c, next);

@@ -19,5 +19,4 @@ uint32_t against_wall(dungeon_t *d, character_t *c);
 uint32_t move_pc(dungeon_t *d, character_t *c, pair_t next, int giveny, int givenx);
 void move_character(dungeon_t *d, character_t *c, pair_t next);
 void go_up_down_stairs(dungeon_t *d);
-
 #endif
