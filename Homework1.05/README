@@ -1,0 +1,21 @@
+Author: Nicolas De la Cruz
+Credit: Jeremy Scheaffer
+
+Program description:
+The program is to use NCurses to create a single window to display the game.
+In this program the user puts input to do the following:
+-m:bring up monster list
+ *UP_ARROW: scroll up the monster list
+ *DOWN_ARROW: scroll down the monster list 
+-q:quit game
+-1/b: move down-left
+-2/j: move dow
+-3/n: move down-right
+-4/h: move left
+-5/' ': do not move, skip turn
+-6/l: move right
+-7/y: move up-left
+-8/k: move up
+-9/u: move up-right
+-'>': go down stairs, only if standing on '>'
+-'<' go up stairs, only if standing on '<'
