@@ -16,12 +16,24 @@
 
 #define DUMP_HARDNESS_IMAGES 0
 
+/*
 typedef struct corridor_path {
   heap_node_t *hn;
   uint8_t pos[2];
   uint8_t from[2];
   int32_t cost;
 } corridor_path_t;
+*/
+
+
+class corridor_path_t {
+public:
+  heap_node_t *hn;
+  uint8_t pos[2];
+  uint8_t from[2];
+  int32_t cost;
+
+};
 
 static uint32_t adjacent_to_room(dungeon_t *d, int16_t y, int16_t x)
 {
