@@ -2,15 +2,14 @@
 #include <string.h>
 #include <sys/time.h>
 #include <unistd.h>
-#include <ncurses.h>
 
 /* Very slow seed: 686846853 */
 
 #include "dungeon.h"
-#include "character.h"
 #include "pc.h"
 #include "npc.h"
 #include "move.h"
+#include "io.h"
 
 const char *victory =
   "\n                                       o\n"
@@ -198,11 +197,9 @@ int main(int argc, char *argv[])
     seed = (tv.tv_usec ^ (tv.tv_sec << 20)) & 0xffffffff;
   }
 
-  if (!do_load && !do_image) {
-    printf("Seed is %ld.\n", seed);
-  }
   srand(seed);
 
+  io_init_terminal();
   init_dungeon(&d);
 
   if (do_load) {
@@ -216,105 +213,17 @@ int main(int argc, char *argv[])
   /* Ignoring PC position in saved dungeons.  Not a bug. */
   config_pc(&d);
   gen_monsters(&d);
-  
-  character_t *monsters[MAX_MONSTERS];
-  int char_row, char_col;
-  int monster_index = 0;
-  
-  for(char_row = 0; char_row < DUNGEON_Y; ++char_row){
-    for(char_col = 0; char_col < DUNGEON_X; ++char_col){
-      if(d.character[char_row][char_col] != NULL && d.character[char_row][char_col]->symbol != '@'){
-	monsters[monster_index] = d.character[char_row][char_col];
-	monster_index++;
-      }
-    }
+
+  io_display(&d);
+  if (!do_load && !do_image) {
+    io_queue_message("Seed is %u.", seed);
   }
-
-
-
-  initscr(); //inits screen
-  noecho();
-  refresh();
-
-
-  char command = NULL;
-  char NS, EW;
-  int cursor_y, x_pos, y_pos, num_monsters, monster_start;
-  
-  //monster start is where the array starts printing
-  monster_start = 0;
-
-  //continuous loop that takes user input and does different actions depending on input
-  while (pc_is_alive(&d) && dungeon_has_npcs(&d) && command != 'q') {
-
-    render_dungeon(&d);
-    command = getch();
-
-    //user selected monster list
-    if(command == 'm'){
-
-      //while user does not input 'q' for quit or 'esc'
-      while(command != 'q' && command != 27){
-	
-	//create window 21 X 80
-	WINDOW *monster_win = newwin(21, 80, 0, 0);
-	box(monster_win, 0, 0);
-
-	keypad(monster_win, TRUE);
-
-	//variables used to help format the printing on window
-	x_pos = y_pos = monster_index = 0;
-	cursor_y = 3;
-	NS = 'N';
-	EW = 'E';
-
-	
-	for(num_monsters = monster_start; num_monsters < MAX_MONSTERS; ++num_monsters){
-	  x_pos = d.pc.position[dim_x] - monsters[num_monsters]->position[dim_x];
-	  y_pos = d.pc.position[dim_y] - monsters[num_monsters]->position[dim_y];
-	  
-	  if(x_pos < 0){
-	    EW = 'W';
-	  }
-
-	  if(y_pos < 0){
-	    NS = 'S';
-	  }
-
-	  mvwprintw(monster_win, cursor_y, 1, "%c", monsters[num_monsters]->symbol);
-	  
-	  mvwprintw(monster_win, cursor_y, 3, "%d %c, ", abs(y_pos), NS);
-	  mvwprintw(monster_win, cursor_y, 8, " %d %c", abs(x_pos), EW);
-
-	  cursor_y++;
-	}
-      
-	command = wgetch(monster_win);
-
-	if(command == 3){
-	  if(monster_start + 1 < MAX_MONSTERS){
-	    monster_start++;
-	  }
-	}
-	else if (command == 2){
-	  if(monster_start -1 > 0){
-	    monster_start--;
-	  }
-	}
-	wrefresh(monster_win);
-      }
-      endwin();
-    }
-    else {
-      do_moves(&d, command);
-    }
+  while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {
+    do_moves(&d);
   }
+  io_display(&d);
 
-  //close window
-  endwin();
-  
-
-  //render_dungeon(&d);
+  io_reset_terminal();
 
   if (do_save) {
     if (do_save_seed) {
@@ -340,13 +249,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  //if user quit then display quitter message else display win/loss message
-  if(command == 'q'){
-    printf("YOU QUIT! YOU QUITTER!\n");
-  }
-  else{
-    printf("%s", pc_is_alive(&d) ? victory : tombstone);
-  }
+  printf("%s", pc_is_alive(&d) ? victory : tombstone);
   printf("You defended your life in the face of %u deadly beasts.\n"
          "You avenged the cruel and untimely murders of %u "
          "peaceful dungeon residents.\n",
