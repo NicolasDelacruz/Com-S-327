@@ -4,15 +4,13 @@
 # include <stdint.h>
 # include "character.h"
 # include "dims.h"
+# include "dungeon.h"
 
 typedef struct dungeon dungeon_t;
 
-/*
-typedef struct pc {
-} pc_t;
-*/
-
 class pc : public Character {
+ public:
+  terrain_type_t map[DUNGEON_Y][DUNGEON_X];
 };
 
 void pc_delete(pc_t *pc);

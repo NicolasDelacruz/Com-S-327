@@ -617,6 +617,20 @@ int gen_dungeon(dungeon_t *d)
   return 0;
 }
 
+int copy_dungeon(dungeon_t *d, pc *given_pc)
+{
+
+  int i, j;
+
+  for(i = 0; i < DUNGEON_Y; ++i){
+    for(j = 0;j < DUNGEON_X; ++j){
+      given_pc->map[i][j] = d->map[i][j];
+    }
+  }
+
+  return 0;
+}
+
 void delete_dungeon(dungeon_t *d)
 {
   free(d->rooms);
