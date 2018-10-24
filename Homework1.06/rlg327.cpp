@@ -77,6 +77,7 @@ void usage(char *name)
 int main(int argc, char *argv[])
 {
   dungeon_t d;
+  pc new_pc;
   time_t seed;
   struct timeval tv;
   uint32_t i;
@@ -213,17 +214,16 @@ int main(int argc, char *argv[])
   /* Ignoring PC position in saved dungeons.  Not a bug. */
   config_pc(&d);
   gen_monsters(&d);
-  pc new_pc;
   copy_dungeon(&d, &new_pc);
 
-  io_display(&d);
+  io_display(&d, &new_pc);
   if (!do_load && !do_image) {
     io_queue_message("Seed is %u.", seed);
   }
   while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {
-    do_moves(&d);
+    do_moves(&d, &new_pc);
   }
-  io_display(&d);
+  io_display(&d, &new_pc);
 
   io_reset_terminal();
 

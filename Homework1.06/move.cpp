@@ -115,7 +115,7 @@ void move_character(dungeon_t *d, character_t *c, pair_t next)
   }
 }
 
-void do_moves(dungeon_t *d)
+void do_moves(dungeon_t *d, pc_t *vision_pc)
 {
   pair_t next;
   character_t *c;
@@ -168,7 +168,7 @@ void do_moves(dungeon_t *d)
     heap_insert(&d->events, update_event(d, e, 1000 / c->speed));
   }
 
-  io_display(d);
+  io_display(d, vision_pc);
   if (pc_is_alive(d) && e->c == &d->pc) {
     c = e->c;
     d->time = e->time;
@@ -177,7 +177,7 @@ void do_moves(dungeon_t *d)
      * and recreated every time we leave and re-enter this function.    */
     e->c = NULL;
     event_delete(e);
-    io_handle_input(d);
+    io_handle_input(d, vision_pc);
   }
 }
 
@@ -239,7 +239,7 @@ static void new_dungeon_level(dungeon_t *d, uint32_t dir)
 }
 
 
-uint32_t move_pc(dungeon_t *d, uint32_t dir)
+uint32_t move_pc(dungeon_t *d, uint32_t dir, pc *vision_pc)
 {
   pair_t next;
   uint32_t was_stairs = 0;
@@ -315,7 +315,7 @@ uint32_t move_pc(dungeon_t *d, uint32_t dir)
   } else if (mappair(next) < ter_floor) {
     io_queue_message(wallmsg[rand() % (sizeof (wallmsg) /
                                        sizeof (wallmsg[0]))]);
-    io_display(d);
+    io_display(d, vision_pc);
   }
 
   return 1;

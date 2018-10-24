@@ -621,10 +621,21 @@ int copy_dungeon(dungeon_t *d, pc *given_pc)
 {
 
   int i, j;
+  int pc_x = d->pc.position[dim_x];
+  int pc_y = d->pc.position[dim_y];
 
   for(i = 0; i < DUNGEON_Y; ++i){
     for(j = 0;j < DUNGEON_X; ++j){
-      given_pc->map[i][j] = d->map[i][j];
+      //the two conditionals initializes the map to the radius of 5 for vision by checking the dims of pc.position
+      //if loop index is not within that range then fill map with black space (ter_wall_immutable)
+      if(i >= pc_y - 2 && i <= pc_y + 2){
+	if(j >= pc_x - 2 && j <= pc_x + 2){
+	  given_pc->map[i][j] = d->map[i][j];
+	}
+      }
+      else {
+	given_pc->map[i][j] = ter_wall_immutable;
+      }
     }
   }
 

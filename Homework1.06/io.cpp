@@ -13,14 +13,8 @@
 /* Same ugly hack we did in path.c */
 static dungeon_t *dungeon;
 
-/*
-typedef struct io_message {
-   * Will print " --more-- " at end of line when another message follows. *
-   * Leave 10 extra spaces for that.                                      *
-  char msg[71];
-  struct io_message *next;
-} io_message_t;
-*/
+/*This varible is used to see if io_display will print pc_vision or full map*/
+int fog_of_war = 1;
 
 class io_message_t {
 public:
@@ -208,46 +202,89 @@ static character_t *io_nearest_visible_monster(dungeon_t *d)
   return n;
 }
 
-void io_display(dungeon_t *d)
+void io_display(dungeon_t *d, pc_t *vision_pc)
 {
   uint32_t y, x;
   character_t *c;
 
   clear();
-  for (y = 0; y < 21; y++) {
-    for (x = 0; x < 80; x++) {
-      if (d->character[y][x]) {
-        mvaddch(y + 1, x, d->character[y][x]->symbol);
-      } else {
-        switch (mapxy(x, y)) {
-        case ter_wall:
-        case ter_wall_immutable:
-          mvaddch(y + 1, x, ' ');
-          break;
-        case ter_floor:
-        case ter_floor_room:
-          mvaddch(y + 1, x, '.');
-          break;
-        case ter_floor_hall:
-          mvaddch(y + 1, x, '#');
-          break;
-        case ter_debug:
-          mvaddch(y + 1, x, '*');
-          break;
-        case ter_stairs_up:
-          mvaddch(y + 1, x, '<');
-          break;
-        case ter_stairs_down:
-          mvaddch(y + 1, x, '>');
-          break;
-        default:
- /* Use zero as an error symbol, since it stands out somewhat, and it's *
-  * not otherwise used.                                                 */
-          mvaddch(y + 1, x, '0');
-        }
+
+  if(fog_of_war){
+    for (y = 0; y < 21; y++) {
+      for (x = 0; x < 80; x++) {
+	if (d->character[y][x]) {
+	  mvaddch(y + 1, x, d->character[y][x]->symbol);
+	} else {
+	  switch (vision_pc->map[y][x]) {
+	  case ter_wall:
+	  case ter_wall_immutable:
+	    mvaddch(y + 1, x, ' ');
+	    break;
+	  case ter_floor:
+	  case ter_floor_room:
+	    mvaddch(y + 1, x, '.');
+	    break;
+	  case ter_floor_hall:
+	    mvaddch(y + 1, x, '#');
+	    break;
+	  case ter_debug:
+	    mvaddch(y + 1, x, '*');
+	    break;
+	  case ter_stairs_up:
+	    mvaddch(y + 1, x, '<');
+	    break;
+	  case ter_stairs_down:
+	    mvaddch(y + 1, x, '>');
+	    break;
+	  default:
+	    /* Use zero as an error symbol, since it stands out somewhat, and it's *
+	     * not otherwise used.                                                 */
+	    mvaddch(y + 1, x, '0');
+	  }
+	}
       }
     }
   }
+  else{
+    for (y = 0; y < 21; y++) {
+      for (x = 0; x < 80; x++) {
+	if (d->character[y][x]) {
+	  mvaddch(y + 1, x, d->character[y][x]->symbol);
+	} else {
+	  switch (mapxy(x, y)) {
+	  case ter_wall:
+	  case ter_wall_immutable:
+	    mvaddch(y + 1, x, ' ');
+	    break;
+	  case ter_floor:
+	  case ter_floor_room:
+	    mvaddch(y + 1, x, '.');
+	    break;
+	  case ter_floor_hall:
+	    mvaddch(y + 1, x, '#');
+	    break;
+	  case ter_debug:
+	    mvaddch(y + 1, x, '*');
+	    break;
+	  case ter_stairs_up:
+	    mvaddch(y + 1, x, '<');
+	    break;
+	  case ter_stairs_down:
+	    mvaddch(y + 1, x, '>');
+	    break;
+	  default:
+	    /* Use zero as an error symbol, since it stands out somewhat, and it's *
+	     * not otherwise used.                                                 */
+	    mvaddch(y + 1, x, '0');
+	  }
+	}
+      }
+    }
+  }
+  
+  
+
+  
 
   mvprintw(23, 1, "PC position is (%2d,%2d).",
            d->pc.position[dim_x], d->pc.position[dim_y]);
@@ -423,7 +460,7 @@ static void io_list_monsters_display(dungeon_t *d,
   free(s);
 }
 
-static void io_list_monsters(dungeon_t *d)
+static void io_list_monsters(dungeon_t *d, pc_t *vision_pc)
 {
   character_t **c;
   uint32_t x, y, count;
@@ -448,10 +485,10 @@ static void io_list_monsters(dungeon_t *d)
   free(c);
 
   /* And redraw the dungeon */
-  io_display(d);
+  io_display(d, vision_pc);
 }
 
-void io_handle_input(dungeon_t *d)
+void io_handle_input(dungeon_t *d, pc_t *vision_pc)
 {
   uint32_t fail_code;
   int key;
@@ -461,42 +498,42 @@ void io_handle_input(dungeon_t *d)
     case '7':
     case 'y':
     case KEY_HOME:
-      fail_code = move_pc(d, 7);
+      fail_code = move_pc(d, 7, vision_pc);
       break;
     case '8':
     case 'k':
     case KEY_UP:
-      fail_code = move_pc(d, 8);
+      fail_code = move_pc(d, 8, vision_pc);
       break;
     case '9':
     case 'u':
     case KEY_PPAGE:
-      fail_code = move_pc(d, 9);
+      fail_code = move_pc(d, 9, vision_pc);
       break;
     case '6':
     case 'l':
     case KEY_RIGHT:
-      fail_code = move_pc(d, 6);
+      fail_code = move_pc(d, 6, vision_pc);
       break;
     case '3':
     case 'n':
     case KEY_NPAGE:
-      fail_code = move_pc(d, 3);
+      fail_code = move_pc(d, 3, vision_pc);
       break;
     case '2':
     case 'j':
     case KEY_DOWN:
-      fail_code = move_pc(d, 2);
+      fail_code = move_pc(d, 2, vision_pc);
       break;
     case '1':
     case 'b':
     case KEY_END:
-      fail_code = move_pc(d, 1);
+      fail_code = move_pc(d, 1, vision_pc);
       break;
     case '4':
     case 'h':
     case KEY_LEFT:
-      fail_code = move_pc(d, 4);
+      fail_code = move_pc(d, 4, vision_pc);
       break;
     case '5':
     case ' ':
@@ -505,10 +542,10 @@ void io_handle_input(dungeon_t *d)
       fail_code = 0;
       break;
     case '>':
-      fail_code = move_pc(d, '>');
+      fail_code = move_pc(d, '>', vision_pc);
       break;
     case '<':
-      fail_code = move_pc(d, '<');
+      fail_code = move_pc(d, '<', vision_pc);
       break;
     case 'Q':
       d->quit = 1;
@@ -532,11 +569,15 @@ void io_handle_input(dungeon_t *d)
     case 's':
       /* New command.  Return to normal display after displaying some   *
        * special screen.                                                */
-      io_display(d);
+      io_display(d, vision_pc);
       fail_code = 1;
       break;
     case 'L':
       fail_code = 1;
+      break;
+    case 'f':
+      fog_of_war = !(fog_of_war);
+      io_display(d, vision_pc);
       break;
     case 'g':
       /* Teleport the PC to a random place in the dungeon.              */
@@ -544,7 +585,7 @@ void io_handle_input(dungeon_t *d)
       fail_code = 0;
       break;
     case 'm':
-      io_list_monsters(d);
+      io_list_monsters(d, vision_pc);
       fail_code = 1;
       break;
     case 'q':
