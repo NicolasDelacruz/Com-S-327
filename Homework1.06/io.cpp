@@ -325,7 +325,103 @@ void io_display_monster_list(dungeon_t *d)
   getch();
 }
 
-uint32_t io_teleport_pc(dungeon_t *d)
+void io_teleport_pc(dungeon_t *d, pc_t *vision_pc){
+
+  int teleport_done = 0;
+  int command;
+  pair_t dest;
+
+  //setting the starting cordinates to pc current position
+  dest[dim_x] = d->pc.position[dim_x];
+  dest[dim_y] = d->pc.position[dim_y];
+
+  while (!teleport_done){
+    //places the cursor on the map 
+    mvaddch(dest[dim_y], dest[dim_x], '*');
+    
+    command = getch();
+    
+    switch (command) {
+    case '7':
+    case 'y':
+    case KEY_HOME:
+      dest[dim_x] -= 1;
+      dest[dim_y] -= 1;
+      break;
+    case '8':
+    case 'k':
+    case KEY_UP:
+      dest[dim_y] -= 1;
+      break;
+    case '9':
+    case 'u':
+    case KEY_PPAGE:
+      dest[dim_x] += 1;
+      dest[dim_y] -= 1;
+      break;
+    case '6':
+    case 'l':
+    case KEY_RIGHT:
+      dest[dim_x] += 1;
+      break;
+    case '3':
+    case 'n':
+    case KEY_NPAGE:
+      dest[dim_x] += 1;
+      dest[dim_y] += 1;
+      break;
+    case '2':
+    case 'j':
+    case KEY_DOWN:
+      dest[dim_y] += 1;
+      break;
+    case '1':
+    case 'b':
+    case KEY_END:
+      dest[dim_x] -= 1;
+      dest[dim_y] += 1;
+      break;
+    case '4':
+    case 'h':
+    case KEY_LEFT:
+      dest[dim_x] -= 1;
+      break;
+    case '5':
+    case ' ':
+    case '.':
+    case KEY_B2:
+      /*does nothing*/
+      break;
+    case 'r':
+      io_random_teleport_pc(d, vision_pc);
+      teleport_done = 1;
+      break;
+    case 'g': 
+      d->character[d->pc.position[dim_y]][d->pc.position[dim_x]] = NULL;
+      d->character[dest[dim_y]][dest[dim_x]] = &d->pc;
+
+      d->pc.position[dim_y] = dest[dim_y];
+      d->pc.position[dim_x] = dest[dim_x];
+
+      if (mappair(dest) < ter_floor) {
+	mappair(dest) = ter_floor;
+      }
+
+      dijkstra(d);
+      dijkstra_tunnel(d);
+
+      io_display(d, vision_pc);
+
+      teleport_done = 1;
+      break;
+    default:
+    break;
+    }
+  }
+
+}
+
+void io_random_teleport_pc(dungeon_t *d, pc_t *vision_pc)
 {
   /* Just for fun. */
   pair_t dest;
@@ -348,8 +444,10 @@ uint32_t io_teleport_pc(dungeon_t *d)
   dijkstra(d);
   dijkstra_tunnel(d);
 
-  return 0;
+  io_display(d, vision_pc);
 }
+
+
 /* Adjectives to describe our monsters */
 static const char *adjectives[] = {
   "A menacing ",
@@ -587,7 +685,7 @@ void io_handle_input(dungeon_t *d, pc_t *vision_pc)
       break;
     case 'g':
       /* Teleport the PC to a random place in the dungeon.              */
-      io_teleport_pc(d);
+      io_teleport_pc(d, vision_pc);
       fail_code = 0;
       break;
     case 'm':
