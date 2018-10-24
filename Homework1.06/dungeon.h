@@ -97,6 +97,8 @@ int write_dungeon(dungeon_t *d, char *file);
 int read_dungeon(dungeon_t *d, char *file);
 int read_pgm(dungeon_t *d, char *pgm);
 
-int copy_dungeon(dungeon_t *d, pc *given_pc);
+int copy_dungeon(dungeon_t *d, pc *vision_pc);
+int clear_dungeon(dungeon_t *d, pc *vision_pc);
+int update_dungeon(dungeon_t *d, pc *vision_pc);
 
 #endif

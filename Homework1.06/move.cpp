@@ -164,6 +164,7 @@ void do_moves(dungeon_t *d, pc_t *vision_pc)
 
     npc_next_pos(d, c, next);
     move_character(d, c, next);
+    update_dungeon(d, vision_pc);
 
     heap_insert(&d->events, update_event(d, e, 1000 / c->speed));
   }

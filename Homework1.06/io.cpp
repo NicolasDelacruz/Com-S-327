@@ -212,7 +212,9 @@ void io_display(dungeon_t *d, pc_t *vision_pc)
   if(fog_of_war){
     for (y = 0; y < 21; y++) {
       for (x = 0; x < 80; x++) {
-	if (d->character[y][x]) {
+	if (d->character[y][x] && 
+	    (signed)y <= d->pc.position[dim_y] + 2 && (signed)y >= d->pc.position[dim_y] - 2 && 
+	    (signed)x <= d->pc.position[dim_x] + 2 && (signed)x >= d->pc.position[dim_x] - 2) {
 	  mvaddch(y + 1, x, d->character[y][x]->symbol);
 	} else {
 	  switch (vision_pc->map[y][x]) {
@@ -543,9 +545,13 @@ void io_handle_input(dungeon_t *d, pc_t *vision_pc)
       break;
     case '>':
       fail_code = move_pc(d, '>', vision_pc);
+      clear_dungeon(d, vision_pc);
+      copy_dungeon(d, vision_pc);
       break;
     case '<':
       fail_code = move_pc(d, '<', vision_pc);
+      clear_dungeon(d, vision_pc);
+      copy_dungeon(d, vision_pc);
       break;
     case 'Q':
       d->quit = 1;
