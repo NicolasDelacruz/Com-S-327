@@ -1,0 +1,12 @@
+Author: Nicolas De la Cruz
+Credit: Jeremy Scheaffer
+
+Program description:
+    -The program is to convert existing C code to C++ as well as the new feautures:
+    -Fog of War: This is accessed/toggled on and off by pressing 'f' key.
+    	    	 This feature limits the visibility of the pc and gets updated as he moves throughout the map.
+    -Teleport: This function is accessed by pressing the 'g' key.
+    	       Once teleport is activated you can select a new position in the map to teleport to and the pc will be teleported once one of the two options is done:
+	       	    *press 'g' to complete teleport
+		    *press 'r' to be teleported to a random location
+		    *press 'q' to cancel teleport

@@ -333,7 +333,7 @@ void io_teleport_pc(dungeon_t *d, pc_t *vision_pc){
 
   //setting the starting cordinates to pc current position
   dest[dim_x] = d->pc.position[dim_x];
-  dest[dim_y] = d->pc.position[dim_y];
+  dest[dim_y] = d->pc.position[dim_y] + 1;
 
   while (!teleport_done){
     //places the cursor on the map 
@@ -392,20 +392,19 @@ void io_teleport_pc(dungeon_t *d, pc_t *vision_pc){
     case KEY_B2:
       /*does nothing*/
       break;
+    case 'q':
+      teleport_done = 1;
+      break;
     case 'r':
       io_random_teleport_pc(d, vision_pc);
       teleport_done = 1;
       break;
     case 'g': 
       d->character[d->pc.position[dim_y]][d->pc.position[dim_x]] = NULL;
-      d->character[dest[dim_y]][dest[dim_x]] = &d->pc;
+      d->character[dest[dim_y]-1][dest[dim_x]] = &d->pc;
 
-      d->pc.position[dim_y] = dest[dim_y];
+      d->pc.position[dim_y] = dest[dim_y] - 1;
       d->pc.position[dim_x] = dest[dim_x];
-
-      if (mappair(dest) < ter_floor) {
-	mappair(dest) = ter_floor;
-      }
 
       dijkstra(d);
       dijkstra_tunnel(d);
