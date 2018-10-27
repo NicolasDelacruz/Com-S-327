@@ -2,6 +2,12 @@
 #include <string.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 /* Very slow seed: 686846853 */
 
@@ -265,6 +271,32 @@ int main(int argc, char *argv[])
   //}
 
   //delete_dungeon(&d);
+
+  vector<string> list;
+  list.clear();
+
+  string line;
+
+  string homedir = getenv("HOME");
+  string rest = "/.rlg327/monster_desc.txt";
+  string path = homedir + rest;
+
+
+  ifstream myfile (path.c_str());
+  
+  if (myfile.is_open()) {
+    while (getline (myfile,line)){
+      list.push_back(line);
+    }
+  }else {
+    cout << "Unable to open file \n";
+  }
+
+
+  for(std::vector<string>::iterator it = list.begin(); it != list.end(); ++it) {
+    std::cout << *it << endl;
+  }
+  
 
   return 0;
 }
