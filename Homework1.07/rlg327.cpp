@@ -275,8 +275,12 @@ int main(int argc, char *argv[])
   vector<string> list;
   list.clear();
 
-  string line;
+  //checks if it the first line
+  int firstline = 1;
 
+  //to get word to put in vectors
+  string line;
+  //to get path of ile
   string homedir = getenv("HOME");
   string rest = "/.rlg327/monster_desc.txt";
   string path = homedir + rest;
@@ -285,8 +289,16 @@ int main(int argc, char *argv[])
   ifstream myfile (path.c_str());
   
   if (myfile.is_open()) {
-    while (getline (myfile,line)){
+    while (getline(myfile,line)){
+      //works
+      if(line != "RLG327 MONSTER DESCRIPTION 1" && firstline){
+	printf("Not a valid file \n");
+	return 0;
+      }
+
       list.push_back(line);
+
+      firstline = 0;
     }
   }else {
     cout << "Unable to open file \n";
@@ -294,7 +306,7 @@ int main(int argc, char *argv[])
 
 
   for(std::vector<string>::iterator it = list.begin(); it != list.end(); ++it) {
-    std::cout << *it << endl;
+    std:: cout << *it << endl;
   }
   
 
