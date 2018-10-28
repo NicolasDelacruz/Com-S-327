@@ -278,8 +278,13 @@ int main(int argc, char *argv[])
   //checks if it the first line
   int firstline = 1;
 
-  //to get word to put in vectors
+  //to get line
   string line;
+
+  string NAME, DESC, COLOR, SPEED, ABIL, HP, DAM, SYMB, RRTY;
+
+  int DUP;
+
   //to get path of ile
   string homedir = getenv("HOME");
   string rest = "/.rlg327/monster_desc.txt";
@@ -296,18 +301,77 @@ int main(int argc, char *argv[])
 	return 0;
       }
 
-      list.push_back(line);
+
+      if(line == "BEGIN MONSTER"){
+	DUP = 0;
+	while(line != "END") {
+	  getline(myfile, line);
+
+	  if(line == "DESC" && !(DUP = (DESC != "") + DUP)){
+	    while (line != "."){
+	      getline(myfile, line);
+	      if(line != "."){
+		DESC += line + "\n"; //FIX to do after every 77 characters
+	      }
+	    }
+	  }
+	  else if(line.find("HP ") == 0 && !(DUP = (HP != "") + DUP)) {
+	    HP = line.substr(3, line.length());	
+	  }
+	  else if(line.find("DAM ") == 0 && !(DUP = (DAM != "") + DUP)) {
+	    DAM = line.substr(4, line.length());	
+	  }
+	  else if(line.find("NAME ") == 0 && !(DUP = (NAME != "") + DUP)) {
+	    NAME = line.substr(5, line.length());	
+	  }
+	  else if(line.find("ABIL ") == 0 && !(DUP = (ABIL != "") + DUP)) {
+	    ABIL = line.substr(5, line.length());	
+	  }
+	  else if(line.find("SYMB ") == 0 && !(DUP = (SYMB != "") + DUP)) {
+	    SYMB = line.substr(5, line.length());
+	  }
+	  else if(line.find("RRTY ") == 0 && !(DUP = (RRTY != "") + DUP)) {
+	    RRTY = line.substr(5, line.length());
+	  }
+	  else if(line.find("COLOR ") == 0 && !(DUP = (COLOR != "") + DUP)) {
+	    COLOR = line.substr(6, line.length());	
+	  }
+	  else if(line.find("SPEED ") == 0 && !(DUP = (SPEED != "") + DUP)) {
+	    SPEED = line.substr(6, line.length());
+	  }
+	}
+
+	//print only if there are no empty fields
+	if(DESC != "" && HP != "" && DAM != "" && NAME != "" &&
+	   ABIL != "" && SYMB != "" && RRTY != "" && COLOR != "" && SPEED != "" && !(DUP)){
+	  cout << NAME << endl;
+	  cout << DESC << endl;
+	  cout << COLOR << endl;
+	  cout << SPEED << endl;
+	  cout << ABIL << endl;
+	  cout << HP << endl;
+	  cout << DAM << endl;
+	  cout << SYMB << endl;
+	  cout << RRTY << endl;
+	  cout << endl;
+	}
+      }
+      
+      //resetting the files
+      NAME = DESC = COLOR = SPEED = ABIL = HP = DAM = SYMB = RRTY = "";
 
       firstline = 0;
     }
   }else {
     cout << "Unable to open file \n";
   }
-
-
+  
+  /*
+  //prints out each item in the vector
   for(std::vector<string>::iterator it = list.begin(); it != list.end(); ++it) {
     std:: cout << *it << endl;
   }
+  */
   
 
   return 0;
