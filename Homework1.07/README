@@ -1,0 +1,11 @@
+Author: Nicolas De la Cruz
+Credit: Jeremy Scheaffer
+
+Program description:
+    -This program is to parse a "monster language file".
+    -The things needed done by parsing:
+    	 -each monster must have exactly 1 of each of these fields: name, description, symbol, damage, hp,speed, rarity, color, and ability.
+	 -if a monster has duplicates or missing a field, that monster input is to be discarded
+	 -if the monster description is more than 77 characters long that then that monster is discarded
+	 -The hp, speed, and damage are all integers calculated through the dice randomizer class that was implemented to return integers as explained per the pdf.
+    -As the program is parsing each monster variable they are being stored in the monsters class, that was implemented to store this information, and those monsters are then pushed back to a vector of monsters.

@@ -1,0 +1,342 @@
+commit b2a54dcd1d4ce6247b3534697717cdb881fb13e3
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 31 18:18:19 2018 -0500
+
+    Finished project. Need to create README and CHANGELOG.
+
+commit 104885f0d22f756b63e8aaf708225687c58fef07
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Oct 30 19:58:12 2018 -0500
+
+    Implemented the appropriate way of doing the DESC varibale. Just need to store the monster descriptions to complete the assginment.
+
+commit ce4787618e6c56795125c9d54cfcfe56215a7876
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Oct 28 14:59:58 2018 -0500
+
+    Just need to ask about DESC, but everything else is done
+
+commit 849034b9681c981166ddaae691a2106d394f849a
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 27 18:46:57 2018 -0500
+
+    Added file checking of metadata if first line was correct
+
+commit f5758b42b03be866b4896ea34288e318c933600a
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 27 16:59:18 2018 -0500
+
+    Reading file from home directory and storing content in vector then printing from vector.
+
+commit 664de9a71751c57ffb893df167f136d235360173
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 27 15:29:12 2018 -0500
+
+    Initial commit for assignment 1.07
+
+commit 84bc9b0f6a87c3a18a291492dd505e8292ba4a33
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 24 19:39:09 2018 -0500
+
+    Added README and CHANGELOG as well as fixed a teleport bug. No other known bugs.
+
+commit 2ec89b95dd3ee91f70cf304ae13160364b63471a
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 24 18:48:55 2018 -0500
+
+    Teleport and random teleport were implemented. Project should be fully done.
+
+commit 8f652067615762acd3d67e10344dc8ab00b4e2c8
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 24 18:09:34 2018 -0500
+
+    Fog of war is implemented.
+
+commit 4fbba8843e0cae3395f0c5b2863c3b9e50a360e9
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 24 15:00:03 2018 -0500
+
+    Almost done with fog of war feature, need to update vision and fix bug with copy of vision.
+
+commit 28dce6991dd928a2f506491a93ecf16d9ec0e714
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Oct 23 17:08:42 2018 -0500
+
+    Created a vision copy of map for PC.
+
+commit 188b4136a0faa2350967190432564e579f021700
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 20 16:58:01 2018 -0500
+
+    In this commit the inheritance from Character to pc and npc were implemented in this commit.
+
+commit f7bd4ffd69a63f2c40967f78fc6ef36c880c2699
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 20 16:22:11 2018 -0500
+
+    Changed the corridor and room structs to classes.
+
+commit aea31c1b2612bc54c3785be886213befbec2015c
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 20 15:31:22 2018 -0500
+
+    Changed from character struct to Character class.
+
+commit b9fb158304af85a5427882df4fb6d20e59bcfcb9
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 20 12:07:24 2018 -0500
+
+    Converted all files from C to C++. Need to convert struct based to inheratence based.
+
+commit 42389cb6cfdf1fe4324eed22571aa9356e8ab33e
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 20 10:47:46 2018 -0500
+
+    Added assignment 1.05 tarball, and imported assignment 1.05 solution for assignment 1.06.
+
+commit 9c225cdae11249457e5bde5402c34c0a78f19d74
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Oct 14 11:15:32 2018 -0500
+
+    Added CHANGELOG, README, and tar for the homework. Last commit for this assignment.
+
+commit 8dd5d483023c2196d20dc2fdf052b4e158bb64e4
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Oct 14 10:55:09 2018 -0500
+
+    Fully working project. Using up/down arrow to scroll in monster list.
+
+commit 502577e352ba0c05296a399e258c6fae3ced6b3c
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 6 22:47:13 2018 -0500
+
+    Working towards getting the scroll to function. Not fully functioning.
+
+commit cdc9ba1020b661e36d36d7bc4c16ac7945ad54fb
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 6 18:31:52 2018 -0500
+
+    In this commit the stairs are now manuverable.
+
+commit d059135b5efe34ee5d22d90296d8893c7c989169
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 6 18:15:12 2018 -0500
+
+    In this commit the program has added the up and down stairs in upper right of the 1st room. Cannot go up or down stairs yet.
+
+commit 2edb58f154ce2dd781eb79df56ebd4abab27ae03
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 6 17:09:55 2018 -0500
+
+    In this commit the program is able to kill monsters just have restrict movements to not go out of boundries.
+
+commit 1f9975cee2db6fd3bb6147acd4569ee67800f90f
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Oct 6 16:04:41 2018 -0500
+
+    In this commit homework1.05 status is that map is generated using ncurses and takes im user input to move pc. Bug: pc moves outside rooms and does not kill monsters
+
+commit 9379364234c33005687ff9a1407f7e55fd79fb26
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 3 22:02:49 2018 -0500
+
+    Added changelog
+
+commit cca7bf6a3790c9ed0fa8558f723de5fdf3485849
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Oct 3 22:02:02 2018 -0500
+
+    last commit before submission
+
+commit 0be25393031dc5c53cbd20274a915316bdb786fd
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 30 19:27:09 2018 -0500
+
+    This is a test commit
+
+commit 64ef29048911d20c9fa2a82eef2d94bdbc034d3d
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 30 19:16:43 2018 -0500
+
+    Another scary commit, almost lost all work again. This commit has heap inserting and removing working but current bug that heap gets stuck on last element.
+
+commit 9a068c68613b15c23270211121eb5501a69af70e
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 30 15:14:16 2018 -0500
+
+    Process of implementing heap. Computer shut off because battery died so this is a scared push.
+
+commit ed6c2f196e6e7a70e4b86aeebd8dea1d3b0c3d06
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 29 20:42:04 2018 -0500
+
+    In this commit the monsters are placed inside the room, and switch fully works.
+
+commit f83e6eafadec4d66f9f5ba055770b3f42be1a29a
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 29 18:48:17 2018 -0500
+
+    In this commit, added random monsters and printing them on the map. The monsters have all requirements defined.
+
+commit a3a78b47545e96c08c60f62e633cca47e0fe84db
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 29 11:04:28 2018 -0500
+
+    In this commit the tar file for assignment 1.03 was added and some generated files were removed from assignment 1.03. A new directory was made for assignment 1.04, with released 1.03 solution.
+
+commit b427b20470272d69260f9ff98a40233fef9eaec1
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 23 15:11:04 2018 -0500
+
+    In this commit the branch is up-to-date after a pull request and CHANGELOG was updated.
+
+commit 08a8775dfb9e7e011664845ba07145fac34bf94c
+Merge: 588ff50 4eb42d2
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 23 15:01:46 2018 -0500
+
+    Merge branch 'master' of https://github.com/NicolasDelacruz/Com-S-327
+
+commit 588ff505d8b4d0c8f94bee3d36f5522b4b74a31f
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 23 15:01:00 2018 -0500
+
+    In this commit the README and CHANGELOG files have been added to project. Homework ready for submission.
+
+commit 4eb42d23a1f16b2c7e79186a74f454de2b09c5a6
+Author: Nicolas <nicolasd@iastate.edu>
+Date:   Sun Sep 16 13:59:42 2018 -0500
+
+    Homework is completed. Need to go back to comment and clean up code.
+
+commit 0310a30c7f835814fc50333e4fcac3551c6a5a05
+Author: Nicolas <nicolasd@iastate.edu>
+Date:   Sun Sep 16 09:59:16 2018 -0500
+
+    First commit to create homework 1.03. Part one of homework is done, placing pc.
+
+commit 522734f8e1bb0b08305da3f2f97ab5189f3bf1ad
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 12 14:11:53 2018 -0500
+
+    Fully functioning program to use switches as parameters. Just need to zip this homework into a tar file.
+
+commit 886edf9369c29348c23d8efbb0e8324df1a52cf8
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 12 00:05:10 2018 -0500
+
+    In this commit the save and load are fully implemented. Still need to implement --load --save.
+
+commit 4209e419c50d058f1b77b8c610afeb4611719f53
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Sep 11 15:17:24 2018 -0500
+
+    In this commit the load is implemented. NOT fully functioning, debugging is needed.
+
+commit d23a6a1fadf8f97081f2efb72e3b443ff6420cac
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 9 21:24:18 2018 -0500
+
+    In this commit the --save switch was implemented. --load switch to be implemented.
+
+commit 91a1d05a33899b14ba581dbce32b87a47a73e35b
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Sep 9 15:52:27 2018 -0500
+
+    First commit for homework 1.02. In this commit I used Professor Sheaffer's solution to homework 1.01. Current status: all switches are functioning.
+
+commit 51b25b4dde159ace16e8070dfc79a67301345899
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 5 09:00:55 2018 -0500
+
+    Created the tar file out of all existing files from previous commit.
+
+commit 388f24cc725c8ddf8d3e53f1ad460086e6fdef60
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Wed Sep 5 08:40:47 2018 -0500
+
+    In this commit the program has all the files needed to turn in.
+
+commit 7e18a8e9ca776a5b3da3043b76123b7df3fae2ed
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Sep 4 22:39:48 2018 -0500
+
+    In this commit the homework1.c file is fully commented and working.
+
+commit cb038a4c800866c09612cdf183cc91c3823453bb
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Sep 4 19:23:13 2018 -0500
+
+    Fully functioning program that concludes assignment 1.
+
+commit 657eb73549a3ac6b4f372b7319057894e5903371
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Mon Sep 3 20:11:11 2018 -0500
+
+    In this commit the program is able to add all 5 VALID rooms. The rooms are atleaast one space apart and do not go into the border
+
+commit 6b35f344349da731cee5e0e68acd6f3089b7e3ba
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Mon Sep 3 16:31:29 2018 -0500
+
+    In this commit, the program is able to generate 5 doors. (No restriction on where they are supposed to be)
+
+commit f47ed46db63bd09e55b7d5a108bb7adbbb70f313
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 1 23:54:58 2018 -0500
+
+    Able to generate 1 door, random size and random location.
+
+commit d49506f391a25665592847a3d2b7c7ad8de5a036
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 1 18:19:48 2018 -0500
+
+    Created the map, and is able to print it
+
+commit e2c8813849bfc50db445bc9030761fb6f99f562c
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Sep 1 15:34:55 2018 -0500
+
+    Homework 0 directory clean up
+
+commit caa639efa600ee72209cd6a09f8f59d24aff4e6f
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Tue Aug 28 21:54:17 2018 -0500
+
+    Working version, and shorter/cleaner
+
+commit 1a53332cb39acf7e467509592daf4ce7bdfb415d
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 19:36:49 2018 -0500
+
+    Fully implemented version of homework, NOT FUNCTIONING appropriately. Needs debugging.
+
+commit 8aa8533790d228caaa9fa89e9c386b5a12225fda
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 12:39:28 2018 -0500
+
+    Implemented basic structure of the project for homework 1, but not all functions are fully implemented.
+
+commit f9c4ed4f138b110dd8cc39a4c231504e074ac0a0
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 09:29:09 2018 -0500
+
+    updating homework 0
+
+commit beae73808452ddef27a0702b8f9114142ab90130
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 09:07:57 2018 -0500
+
+    removed test file, hello.c
+
+commit 7ded2b6d29e7a7776757dfd07fb041adb8a57339
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Aug 26 09:06:49 2018 -0500
+
+    Adding test file, hello.c
+
+commit 57863f11290662fb518c29f696538bf20b35d331
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Aug 25 19:32:30 2018 -0500
+
+    Initial commit
