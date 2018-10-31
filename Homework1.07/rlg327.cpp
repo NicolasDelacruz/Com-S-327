@@ -80,6 +80,43 @@ void usage(char *name)
   exit(-1);
 }
 
+
+//dice class calculate int values for HP, DAM, and SPEED
+class dice {
+public:
+  int base;
+  int dice;
+  int sides;
+  
+  int getDiceValue() {
+    int total = 0;
+    int newRand, i;
+    
+    for(i = 0; i < dice; ++i){
+      newRand = rand()%dice;
+      total += newRand;
+    }
+    return total + base;
+  }
+};
+
+
+//class of monsters to hold the values given in the description file
+class monsters {
+public:
+  char symb;
+  int rrty;
+  int hp;
+  int dam;
+  int speed;
+  string name;
+  string desc;
+  string color;
+  string abil;
+};
+
+
+
 int main(int argc, char *argv[])
 {
   dungeon d;
@@ -272,26 +309,11 @@ int main(int argc, char *argv[])
 
   //delete_dungeon(&d);
 
-
   
-  /*
-  class monster_desc {
-  public:
-    string m_name;
-    string m_desc;
-    string m_colo;
-    string m_speed;
-    string m_abil;
-    string m_hp;
-    string m_dam;
-    string m_symb;
-    string m_rrty;
-  };
-  */
-
-
-  //vector<string> list;
-  //list.clear();
+  //vector to hold all monsters to be created
+  vector<monsters> monster_list;
+  
+  monster_list.clear();
 
   //checks if it the first line
   int firstline = 1;
@@ -371,10 +393,10 @@ int main(int argc, char *argv[])
 	if(DESC != "" && HP != "" && DAM != "" && NAME != "" &&
 	   ABIL != "" && SYMB != "" && RRTY != "" && COLOR != "" && SPEED != "" && !(DUP)){
 
-	  //monster_desc m;
+	  monsters new_monster;
+	  dice new_dice;
 
-	  //m.m_name = NAME;
-	  
+	  //printing parsed data
 	  cout << NAME << endl;
 	  cout << DESC << endl;
 	  cout << COLOR << endl;
@@ -385,6 +407,38 @@ int main(int argc, char *argv[])
 	  cout << SYMB << endl;
 	  cout << RRTY << endl;
 	  cout << endl;
+
+	  //assinging string variables to monster
+	  new_monster.name = NAME;
+	  new_monster.desc = DESC;
+	  new_monster.color = COLOR;
+	  new_monster.abil = ABIL;
+	  
+	  //assignining char variable to monster
+	  new_monster.symb = SYMB[0];
+
+	  //assigning ints to monsters
+	  //rrty: convert string to int
+	  //hp, dam, and speed: pars the <base>, <dice>, and <sides> from string to then set dice object values
+	  //and lastly calling the getDiceValue method to get int to assign to monster
+	  new_monster.rrty = atoi(RRTY.c_str());
+
+	  new_dice.base = atoi(HP.substr(0,HP.find("+")).c_str());
+	  new_dice.dice  = atoi(HP.substr(HP.find("+"),HP.find("d")).c_str());
+	  new_dice.sides  = atoi(HP.substr(HP.find("d"), HP.length()).c_str());
+	  new_monster.hp = new_dice.getDiceValue();
+
+	  new_dice.base = atoi(DAM.substr(0,DAM.find("+")).c_str());
+	  new_dice.dice  = atoi(DAM.substr(DAM.find("+"), DAM.find("d")).c_str());
+	  new_dice.sides  = atoi(DAM.substr(DAM.find("d"), DAM.length()).c_str());
+	  new_monster.dam = new_dice.getDiceValue();
+
+	  new_dice.base = atoi(SPEED.substr(0,SPEED.find("+")).c_str());
+	  new_dice.dice  = atoi(SPEED.substr(SPEED.find("+"),SPEED.find("d")).c_str());
+	  new_dice.sides  = atoi(SPEED.substr(SPEED.find("d"), SPEED.length()).c_str());
+	  new_monster.speed = new_dice.getDiceValue();
+	  
+	  monster_list.push_back(new_monster);
 	}
       }
       
@@ -397,13 +451,8 @@ int main(int argc, char *argv[])
     cout << "Unable to open file \n";
   }
   
-  /*
-  //prints out each item in the vector
-  for(std::vector<string>::iterator it = list.begin(); it != list.end(); ++it) {
-    std:: cout << *it << endl;
-  }
-  */
-  
+
+  cout << monster_list.size() << endl;
 
   return 0;
 }
