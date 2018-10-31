@@ -272,8 +272,26 @@ int main(int argc, char *argv[])
 
   //delete_dungeon(&d);
 
-  vector<string> list;
-  list.clear();
+
+  
+  /*
+  class monster_desc {
+  public:
+    string m_name;
+    string m_desc;
+    string m_colo;
+    string m_speed;
+    string m_abil;
+    string m_hp;
+    string m_dam;
+    string m_symb;
+    string m_rrty;
+  };
+  */
+
+
+  //vector<string> list;
+  //list.clear();
 
   //checks if it the first line
   int firstline = 1;
@@ -281,8 +299,13 @@ int main(int argc, char *argv[])
   //to get line
   string line;
 
+  //Used to remove the last charater of DESC
+  string tempLine;
+
+  //Attributes to be filled
   string NAME, DESC, COLOR, SPEED, ABIL, HP, DAM, SYMB, RRTY;
 
+  //variable used to check if there are duplicates
   int DUP;
 
   //to get path of ile
@@ -301,19 +324,22 @@ int main(int argc, char *argv[])
 	return 0;
       }
 
-
       if(line == "BEGIN MONSTER"){
 	DUP = 0;
 	while(line != "END") {
 	  getline(myfile, line);
 
 	  if(line == "DESC" && !(DUP = (DESC != "") + DUP)){
+	    getline(myfile, line);
 	    while (line != "."){
-	      getline(myfile, line);
-	      if(line != "."){
-		DESC += line + "\n"; //FIX to do after every 77 characters
+	      if(line.length() > 77){
+		DUP += 1; //setting dup because monster needs to be tossed if line > 77
 	      }
+	      DESC += line + "\n";
+	      getline(myfile, line);
 	    }
+	    tempLine = DESC;
+	    DESC = tempLine.substr(0,tempLine.length()-1);
 	  }
 	  else if(line.find("HP ") == 0 && !(DUP = (HP != "") + DUP)) {
 	    HP = line.substr(3, line.length());	
@@ -344,6 +370,11 @@ int main(int argc, char *argv[])
 	//print only if there are no empty fields
 	if(DESC != "" && HP != "" && DAM != "" && NAME != "" &&
 	   ABIL != "" && SYMB != "" && RRTY != "" && COLOR != "" && SPEED != "" && !(DUP)){
+
+	  //monster_desc m;
+
+	  //m.m_name = NAME;
+	  
 	  cout << NAME << endl;
 	  cout << DESC << endl;
 	  cout << COLOR << endl;
