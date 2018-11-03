@@ -11,6 +11,8 @@
 #include "move.h"
 #include "io.h"
 
+//te
+
 const char *victory =
   "\n                                       o\n"
   "                                      $\"\"$o\n"
