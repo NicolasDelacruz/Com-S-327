@@ -944,7 +944,6 @@ void monster_description::set(const std::string &name,
                               const dice &damage,
                               const uint32_t rrty)
 {
-  this->name = name;
   this->description = description;
   this->symbol = symbol;
   this->color = color;
@@ -1003,6 +1002,37 @@ uint32_t destroy_descriptions(dungeon_t *d)
 }
 
 void object_description::set(const std::string &name,
+                             const std::string &description,
+                             const object_type_t type,
+                             const uint32_t color,
+                             const dice &hit,
+                             const dice &damage,
+                             const dice &dodge,
+                             const dice &defence,
+                             const dice &weight,
+                             const dice &speed,
+                             const dice &attrubute,
+                             const dice &value,
+                             const bool art,
+                             const uint32_t rrty)
+{
+  this->name = name;
+  this->description = description;
+  this->type = type;
+  this->color = color;
+  this->hit = hit;
+  this->damage = damage;
+  this->dodge = dodge;
+  this->defence = defence;
+  this->weight = weight;
+  this->speed = speed;
+  this->attribute = attrubute;
+  this->value = value;
+  this->artifact = art;
+  this->rarity = rrty;
+}
+
+void object_description::object_factory(const std::string &name,
                              const std::string &description,
                              const object_type_t type,
                              const uint32_t color,
