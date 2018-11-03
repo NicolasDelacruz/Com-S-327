@@ -266,6 +266,7 @@ int main(int argc, char *argv[])
     character_delete(d.PC);
   }
   
+  //moved
   destroy_descriptions(&d);
 
   delete_dungeon(&d);
