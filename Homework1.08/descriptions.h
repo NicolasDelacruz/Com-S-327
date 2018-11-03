@@ -39,8 +39,6 @@ typedef enum object_type {
 
 extern const char object_symbol[];
 
-new_objects new_item;
-
 class monster_description {
  private:
   std::string name, description;
@@ -66,54 +64,6 @@ class monster_description {
            const uint32_t rarity);
   std::ostream &print(std::ostream &o);
   char get_symbol() { return symbol; }
-};
-
-class object_description {
- private:
-  std::string name, description;
-  object_type_t type;
-  uint32_t color;
-  dice hit, damage, dodge, defence, weight, speed, attribute, value;
-  bool artifact;
-  uint32_t rarity;
- public:
-  object_description() : name(),    description(), type(objtype_no_type),
-                         color(0),  hit(),         damage(),
-                         dodge(),   defence(),     weight(),
-                         speed(),   attribute(),   value(),
-                         artifact(false), rarity(0)
-  {
-  }
-  void set(const std::string &name,
-           const std::string &description,
-           const object_type_t type,
-           const uint32_t color,
-           const dice &hit,
-           const dice &damage,
-           const dice &dodge,
-           const dice &defence,
-           const dice &weight,
-           const dice &speed,
-           const dice &attrubute,
-           const dice &value,
-           const bool artifact,
-           const uint32_t rarity);
-  std::ostream &print(std::ostream &o);
-  /* Need all these accessors because otherwise there is a *
-   * circular dependancy that is difficult to get around.  */
-  inline const std::new_objects &new_item() const{ return new_item; }
-  inline const std::string &get_name() const { return name; }
-  inline const std::string &get_description() const { return description; }
-  inline const object_type_t get_type() const { return type; }
-  inline const uint32_t get_color() const { return color; }
-  inline const dice &get_hit() const { return hit; }
-  inline const dice &get_damage() const { return damage; }
-  inline const dice &get_dodge() const { return dodge; }
-  inline const dice &get_defence() const { return defence; }
-  inline const dice &get_weight() const { return weight; }
-  inline const dice &get_speed() const { return speed; }
-  inline const dice &get_attribute() const { return attribute; }
-  inline const dice &get_value() const { return value; }
 };
 
 
@@ -170,6 +120,62 @@ class new_objects{
   inline const uint32_t get_speed() const { return speed; }
   inline const uint32_t get_attribute() const { return attribute; }
   inline const uint32_t get_value() const { return value; }
+};
+
+
+class object_description {
+ private:
+  std::string name, description;
+  object_type_t type;
+  uint32_t color;
+  dice hit, damage, dodge, defence, weight, speed, attribute, value;
+  bool artifact;
+  uint32_t rarity;
+ public:
+  object_description() : name(),    description(), type(objtype_no_type),
+                         color(0),  hit(),         damage(),
+                         dodge(),   defence(),     weight(),
+                         speed(),   attribute(),   value(),
+                         artifact(false), rarity(0)
+  {
+  }
+  void set(const std::string &name,
+           const std::string &description,
+           const object_type_t type,
+           const uint32_t color,
+           const dice &hit,
+           const dice &damage,
+           const dice &dodge,
+           const dice &defence,
+           const dice &weight,
+           const dice &speed,
+           const dice &attribute,
+           const dice &value,
+           const bool artifact,
+           const uint32_t rarity);
+
+  new_objects gen_new_obj(){ 
+    new_objects new_item;
+    new_item.set(name, description, type, color, hit.roll(), damage, dodge.roll(), 
+		 defence.roll(), weight.roll(), speed.roll(), attribute.roll(),
+		 value.roll(), artifact, rarity);
+    return new_item;
+  }
+  std::ostream &print(std::ostream &o);
+  /* Need all these accessors because otherwise there is a *
+   * circular dependancy that is difficult to get around.  */
+  inline const std::string &get_name() const { return name; }
+  inline const std::string &get_description() const { return description; }
+  inline const object_type_t get_type() const { return type; }
+  inline const uint32_t get_color() const { return color; }
+  inline const dice &get_hit() const { return hit; }
+  inline const dice &get_damage() const { return damage; }
+  inline const dice &get_dodge() const { return dodge; }
+  inline const dice &get_defence() const { return defence; }
+  inline const dice &get_weight() const { return weight; }
+  inline const dice &get_speed() const { return speed; }
+  inline const dice &get_attribute() const { return attribute; }
+  inline const dice &get_value() const { return value; }
 };
 
 

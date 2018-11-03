@@ -117,6 +117,7 @@ extern const char object_symbol[] = {
   '%', /* objtype_CONTAINER */
 };
 
+
 static inline void eat_whitespace(std::ifstream &f)
 {
   while (isspace(f.peek())) {
@@ -1032,36 +1033,6 @@ void object_description::set(const std::string &name,
   this->rarity = rrty;
 }
 
-void object_description::object_factory(const std::string &name,
-                             const std::string &description,
-                             const object_type_t type,
-                             const uint32_t color,
-                             const dice &hit,
-                             const dice &damage,
-                             const dice &dodge,
-                             const dice &defence,
-                             const dice &weight,
-                             const dice &speed,
-                             const dice &attrubute,
-                             const dice &value,
-                             const bool art,
-                             const uint32_t rrty)
-{
-  this->name = name;
-  this->description = description;
-  this->type = type;
-  this->color = color;
-  this->hit = hit;
-  this->damage = damage;
-  this->dodge = dodge;
-  this->defence = defence;
-  this->weight = weight;
-  this->speed = speed;
-  this->attribute = attrubute;
-  this->value = value;
-  this->artifact = art;
-  this->rarity = rrty;
-}
 
 std::ostream &object_description::print(std::ostream &o)
 {
