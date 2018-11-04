@@ -88,12 +88,12 @@ int main(int argc, char *argv[])
   char *load_file;
   char *pgm_file;
 
-  parse_descriptions(&d);
-  print_descriptions(&d);
-  
-
   /* Quiet a false positive from valgrind. */
   memset(&d, 0, sizeof (d));
+
+  parse_descriptions(&d);
+  //print_descriptions(&d);
+  
   
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */

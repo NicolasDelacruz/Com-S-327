@@ -9,6 +9,7 @@
 #include "pc.h"
 #include "utils.h"
 #include "dungeon.h"
+#include "descriptions.h"
 
 /* Same ugly hack we did in path.c */
 static dungeon *thedungeon;
@@ -206,6 +207,12 @@ void io_display(dungeon *d)
   character *c;
   int32_t visible_monsters;
 
+
+  new_objects n;
+  char item_sym;
+  int index = 0;
+
+
   clear();
   for (visible_monsters = -1, y = 0; y < 21; y++) {
     for (x = 0; x < 80; x++) {
@@ -243,6 +250,12 @@ void io_display(dungeon *d)
         case ter_stairs_down:
           mvaddch(y + 1, x, '>');
           break;
+	case ter_item:
+	  n = d->object_descriptions.at(index).gen_new_obj();
+	  item_sym = n.get_symbol(n.get_type());
+	  mvaddch(y + 1, x, item_sym);
+	  index++;
+	  break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
   * not otherwise used.                                                 */
@@ -287,6 +300,10 @@ void io_display_no_fog(dungeon *d)
   uint32_t y, x;
   character *c;
 
+  new_objects n;
+  char item_sym;
+  int index = 0;
+
   clear();
   for (y = 0; y < 21; y++) {
     for (x = 0; x < 80; x++) {
@@ -314,6 +331,12 @@ void io_display_no_fog(dungeon *d)
         case ter_stairs_down:
           mvaddch(y + 1, x, '>');
           break;
+	case ter_item:
+	  n = d->object_descriptions.at(index).gen_new_obj();
+	  item_sym = n.get_symbol(n.get_type());
+	  mvaddch(y + 1, x, item_sym);
+	  index++;
+	  break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
   * not otherwise used.                                                 */

@@ -569,6 +569,23 @@ static void place_stairs(dungeon *d)
   } while (rand_under(2, 4));
 }
 
+
+static void place_items(dungeon *d)
+{
+  pair_t p;
+  int index = 0;
+  do {
+    while ((p[dim_y] = rand_range(1, DUNGEON_Y - 2)) &&
+           (p[dim_x] = rand_range(1, DUNGEON_X - 2)) &&
+           ((mappair(p) < ter_floor)                 ||
+            (mappair(p) > ter_stairs)))
+      ;
+    mappair(p) = ter_item;
+    index++;
+  } while (index < 10);
+}
+
+
 static int make_rooms(dungeon *d)
 {
   uint32_t i;
@@ -601,6 +618,7 @@ int gen_dungeon(dungeon *d)
   } while (place_rooms(d));
   connect_rooms(d);
   place_stairs(d);
+  place_items(d);
 
   return 0;
 }
