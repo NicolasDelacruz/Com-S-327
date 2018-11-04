@@ -64,10 +64,10 @@ class monster_description : public npc {
            const dice &damage,
            const uint32_t rarity);
   std::ostream &print(std::ostream &o);
-  npc  gen_new_mon(){ 
+  npc gen_new_mon(){ 
     npc new_mon;
     new_mon.set(name, description, symbol, color, speed.roll(), abilities,
-		      hitpoints.roll(), damage, rarity);
+		hitpoints.roll(), damage, rarity);
     return new_mon;
   }
   char get_symbol() { return symbol; }
@@ -91,11 +91,11 @@ class new_objects{
   uint32_t rarity;
 
  public:
-  new_objects() : name(),    description(), type(objtype_no_type),
-                         color(0),  hit(),         damage(),
-                         dodge(),   defence(),     weight(),
-                         speed(),   attribute(),   value(),
-                         artifact(false), rarity(0)
+ new_objects() : name(),    description(), type(objtype_no_type),
+    color(0),  hit(),         damage(),
+    dodge(),   defence(),     weight(),
+    speed(),   attribute(),   value(),
+    artifact(false), rarity(0)
   {
   }
   void set(const std::string &name,
@@ -112,6 +112,8 @@ class new_objects{
            const uint32_t value,
            const bool artifact,
            const uint32_t rarity);
+
+  char get_symbol(object_type_t type);
   std::ostream &print(std::ostream &o);
   /* Need all these accessors because otherwise there is a *
    * circular dependancy that is difficult to get around.  */
@@ -130,9 +132,6 @@ class new_objects{
 };
 
 
-npc gen(const std::string name, const std::string description, char symbol, 
-		    const std::vector<uint32_t> color, uint32_t speed, uint32_t abilities, 
-		    uint32_t hitpoints, dice damage, uint32_t rarity);
 
 class object_description {
  private:
@@ -142,12 +141,13 @@ class object_description {
   dice hit, damage, dodge, defence, weight, speed, attribute, value;
   bool artifact;
   uint32_t rarity;
+
  public:
-  object_description() : name(),    description(), type(objtype_no_type),
-                         color(0),  hit(),         damage(),
-                         dodge(),   defence(),     weight(),
-                         speed(),   attribute(),   value(),
-                         artifact(false), rarity(0)
+ object_description() : name(),    description(), type(objtype_no_type),
+    color(0),  hit(),         damage(),
+    dodge(),   defence(),     weight(),
+    speed(),   attribute(),   value(),
+    artifact(false), rarity(0)
   {
   }
   void set(const std::string &name,

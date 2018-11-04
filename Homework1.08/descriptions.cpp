@@ -1034,6 +1034,7 @@ void object_description::set(const std::string &name,
 }
 
 
+
 std::ostream &object_description::print(std::ostream &o)
 {
   uint32_t i;
@@ -1062,4 +1063,104 @@ return o << hit << std::endl << damage << std::endl << dodge << std::endl
 std::ostream &operator<<(std::ostream &o, object_description &od)
 {
   return od.print(o);
+}
+
+//set method for new objects class
+void new_objects::set(const std::string &name,
+		      const std::string &description,
+		      const object_type_t type,
+		      const uint32_t color,
+		      const uint32_t hit,
+		      const dice &damage,
+		      const uint32_t dodge,
+		      const uint32_t defence,
+		      const uint32_t weight,
+		      const uint32_t speed,
+		      const uint32_t attribute,
+		      const uint32_t value,
+		      const bool artifact,
+		      const uint32_t rarity)
+{
+  this->name = name;
+  this->description = description;
+  this->type = type;
+  this->color = color;
+  this->hit = hit;
+  this->damage = damage;
+  this->dodge = dodge;
+  this->defence = defence;
+  this->weight = weight;
+  this->speed = speed;
+  this->attribute = attribute;
+  this->value = value;
+  this->artifact = artifact;
+  this->rarity = rarity;
+}
+
+char new_objects::get_symbol(const object_type_t given_type) {
+  switch (given_type) {
+  case objtype_no_type:
+    return '*';
+    break;
+  case objtype_WEAPON:
+    return '|';
+    break;
+  case objtype_OFFHAND:
+    return ')';
+    break;
+  case objtype_RANGED:
+    return '}';
+    break;
+  case objtype_LIGHT:
+    return '_';
+    break; 
+  case objtype_ARMOR:
+    return '[';
+    break;  
+  case objtype_HELMET:
+    return ']';
+    break;  
+  case objtype_CLOAK:
+    return '(';
+    break;  
+  case objtype_GLOVES:
+    return '{';
+    break;  
+  case objtype_BOOTS:
+    return '\\';
+    break;  
+  case objtype_AMULET:
+    return '"';
+    break;  
+  case objtype_RING:
+    return '=';
+    break;  
+  case objtype_SCROLL:
+    return '~';
+    break;  
+  case objtype_BOOK:
+    return '?';
+    break;  
+  case objtype_FLASK:
+    return '!';
+    break;  
+  case objtype_GOLD:
+    return '$';
+    break;  
+  case objtype_AMMUNITION:
+    return '/';
+    break;  
+  case objtype_FOOD:
+    return ',';
+    break;  
+  case objtype_WAND:
+    return '-';
+    break;
+  case objtype_CONTAINER:
+    return '%';
+    break;
+  default:
+    return 'R';
+    break;
+  }
 }

@@ -23,6 +23,27 @@ static uint32_t max_monster_cells(dungeon *d)
   return sum;
 }
 
+void npc::set(const std::string &name, 
+	 const std::string &description, 
+	 const char symbol, 
+	 const std::vector<uint32_t> &color, 
+	 const uint32_t speed, 
+	 const uint32_t abilities, 
+	 const uint32_t hitpoints, 
+	 const dice &damage,
+	 const uint32_t rarity)
+{
+  this->name = name;
+  this->description = description;
+  this->symbol = symbol;
+  this->color = color;
+  this->speed = speed;
+  this->abilities = abilities;
+  this->hitpoints = hitpoints;
+  this->damage = damage;
+  this->rarity = rarity;
+}
+
 void gen_monsters(dungeon *d)
 {
   uint32_t i;

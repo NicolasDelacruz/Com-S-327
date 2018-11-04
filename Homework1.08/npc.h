@@ -49,13 +49,28 @@ typedef uint32_t npc_characteristics_t;
 
 class npc : public character {
  public:
+  std::string name;
+  std::string description;
+  char symbol;
+  std::vector<uint32_t> color;
+  uint32_t abilities;
+  uint32_t hitpoints;
+  dice damage;
+  uint32_t rarity;
+
   npc_characteristics_t characteristics;
   uint32_t have_seen_pc;
   pair_t pc_last_known_position;
  public:
-  void set(const std::string name, const std::string description, char symbol, 
-		    const std::vector<uint32_t> color, uint32_t speed, uint32_t abilities, 
-		    uint32_t hitpoints, dice damage, uint32_t rarity);
+  void set(const std::string &name, 
+	   const std::string &description, 
+	   const char symbol, 
+	   const std::vector<uint32_t> &color, 
+	   const uint32_t speed, 
+	   const uint32_t abilities, 
+	   const uint32_t hitpoints, 
+	   const dice &damage, 
+	   const uint32_t rarity);
 };
 
 void gen_monsters(dungeon *d);
