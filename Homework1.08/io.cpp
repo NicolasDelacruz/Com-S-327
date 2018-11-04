@@ -210,44 +210,45 @@ void io_updateArray(dungeon *d)
   char item_sym;
   int index = 0;
 
-  clear();
    for (y = 0; y < 21; y++) {
     for (x = 0; x < 80; x++) {
       if (d->character_map[y][x]) {
-        mvaddch(y + 1, x, d->character_map[y][x]->symbol);
+        //d->items[y][x] = d->character_map[y][x]->symbol;
       } else {
 	switch (mapxy(x, y)) {
 	case ter_wall:
 	case ter_wall_immutable:
-	  d->items[y][x] = ' ';
+	  //d->items[y][x] = ' ';
 	  break;
 	case ter_floor:
 	case ter_floor_room:
-	  d->items[y][x] = '.';
+	  //d->items[y][x] = '.';
 	  break;
 	case ter_floor_hall:
-	  d->items[y][x] = '#';
+	  //d->items[y][x] = '#';
 	  break;
 	case ter_debug:
-	  d->items[y][x] = '*';
+	  //d->items[y][x] = '*';
 	  break;
 	case ter_stairs_up:
-	  d->items[y][x] = '<';
+	  //d->items[y][x] = '<';
 	  break;
 	case ter_stairs_down:
-	  d->items[y][x] = '>';
+	  //d->items[y][x] = '>';
 	  break;
 	case ter_item:
 	  n = d->object_descriptions.at(index).gen_new_obj();
 	  item_sym = n.get_symbol(n.get_type());
 	  d->items[y][x] = item_sym;
+	  d->colors[y][x] = n.get_color();
 	  index++;
 	  break;
 	default:
 	  /* Use zero as an error symbol, since it stands out somewhat, and it's *
 	   * not otherwise used. 
 	   */
-	  d->items[y+1][x] = '0';
+	  //d->items[y+1][x] = '0';
+	  break;
 	}
       }
     }
@@ -305,7 +306,9 @@ void io_display(dungeon *d)
           mvaddch(y + 1, x, '>');
           break;
 	case ter_item:
+	  attron(COLOR_PAIR(d->colors[y][x]));
 	  mvaddch(y + 1, x, d->items[y][x]);
+	  attroff(COLOR_PAIR(d->colors[y][x]));
 	  break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
@@ -381,8 +384,10 @@ void io_display_no_fog(dungeon *d)
         case ter_stairs_down:
           mvaddch(y + 1, x, '>');
           break;
-	case ter_item:
+	case ter_item:	  
+	  attron(COLOR_PAIR(d->colors[y][x]));
 	  mvaddch(y + 1, x, d->items[y][x]);
+	  attroff(COLOR_PAIR(d->colors[y][x]));
 	  break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *

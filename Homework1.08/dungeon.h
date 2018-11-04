@@ -72,6 +72,7 @@ class dungeon {
   uint8_t pc_tunnel[DUNGEON_Y][DUNGEON_X];
   character *character_map[DUNGEON_Y][DUNGEON_X];
   char items[DUNGEON_Y][DUNGEON_X];
+  uint32_t colors[DUNGEON_Y][DUNGEON_X];
   pc *PC;
   heap_t events;
   uint16_t num_monsters;
