@@ -200,6 +200,62 @@ static character *io_nearest_visible_monster(dungeon *d)
   return n;
 }
 
+
+
+void io_updateArray(dungeon *d)
+{
+  uint32_t y, x;
+
+  new_objects n;
+  char item_sym;
+  int index = 0;
+
+  clear();
+   for (y = 0; y < 21; y++) {
+    for (x = 0; x < 80; x++) {
+      if (d->character_map[y][x]) {
+        mvaddch(y + 1, x, d->character_map[y][x]->symbol);
+      } else {
+	switch (mapxy(x, y)) {
+	case ter_wall:
+	case ter_wall_immutable:
+	  d->items[y][x] = ' ';
+	  break;
+	case ter_floor:
+	case ter_floor_room:
+	  d->items[y][x] = '.';
+	  break;
+	case ter_floor_hall:
+	  d->items[y][x] = '#';
+	  break;
+	case ter_debug:
+	  d->items[y][x] = '*';
+	  break;
+	case ter_stairs_up:
+	  d->items[y][x] = '<';
+	  break;
+	case ter_stairs_down:
+	  d->items[y][x] = '>';
+	  break;
+	case ter_item:
+	  n = d->object_descriptions.at(index).gen_new_obj();
+	  item_sym = n.get_symbol(n.get_type());
+	  d->items[y][x] = item_sym;
+	  index++;
+	  break;
+	default:
+	  /* Use zero as an error symbol, since it stands out somewhat, and it's *
+	   * not otherwise used. 
+	   */
+	  d->items[y+1][x] = '0';
+	}
+      }
+    }
+  }
+}
+
+
+
 void io_display(dungeon *d)
 {
   uint32_t y, x;
@@ -208,9 +264,7 @@ void io_display(dungeon *d)
   int32_t visible_monsters;
 
 
-  new_objects n;
-  char item_sym;
-  int index = 0;
+  io_updateArray(d);
 
 
   clear();
@@ -251,10 +305,7 @@ void io_display(dungeon *d)
           mvaddch(y + 1, x, '>');
           break;
 	case ter_item:
-	  n = d->object_descriptions.at(index).gen_new_obj();
-	  item_sym = n.get_symbol(n.get_type());
-	  mvaddch(y + 1, x, item_sym);
-	  index++;
+	  mvaddch(y + 1, x, d->items[y][x]);
 	  break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
@@ -300,9 +351,8 @@ void io_display_no_fog(dungeon *d)
   uint32_t y, x;
   character *c;
 
-  new_objects n;
-  char item_sym;
-  int index = 0;
+
+  io_updateArray(d);
 
   clear();
   for (y = 0; y < 21; y++) {
@@ -332,10 +382,7 @@ void io_display_no_fog(dungeon *d)
           mvaddch(y + 1, x, '>');
           break;
 	case ter_item:
-	  n = d->object_descriptions.at(index).gen_new_obj();
-	  item_sym = n.get_symbol(n.get_type());
-	  mvaddch(y + 1, x, item_sym);
-	  index++;
+	  mvaddch(y + 1, x, d->items[y][x]);
 	  break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
