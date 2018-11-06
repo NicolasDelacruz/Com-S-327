@@ -58,7 +58,7 @@ void gen_monsters(dungeon *d)
 
   for (i = 0; i < d->num_monsters; i++) {
 
-    //npc mon = d->monster_descriptions.at(i).gen_new_mon();
+    npc mon = d->monster_descriptions.at(i).gen_new_mon();
 
     m = new npc;
     memset(m, 0, sizeof (*m));
@@ -75,13 +75,12 @@ void gen_monsters(dungeon *d)
     m->position[dim_y] = p[dim_y];
     m->position[dim_x] = p[dim_x];
     d->character_map[p[dim_y]][p[dim_x]] = m;
-    m->speed = rand_range(5, 20);
+    m->speed = mon.get_speed();
+    m->color = mon.get_color();
     m->alive = 1;
     m->sequence_number = ++d->character_sequence_number;
     m->characteristics = rand() & 0x0000000f;
-    /*    m->npc->characteristics = 0xf;*/
-    //m->symbol = symbol[m->characteristics];
-    m->symbol = d->monster_descriptions.at(i).gen_new_mon().get_symbol();
+    m->symbol = mon.get_symbol();
     m->have_seen_pc = 0;
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
 
