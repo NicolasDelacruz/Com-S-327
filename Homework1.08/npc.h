@@ -51,12 +51,7 @@ class npc : public character {
  public:
   std::string name;
   std::string description;
-  char symbol;
-  std::vector<uint32_t> color;
   uint32_t abilities;
-  uint32_t hitpoints;
-  dice damage;
-  uint32_t rarity;
 
   npc_characteristics_t characteristics;
   uint32_t have_seen_pc;
@@ -65,12 +60,18 @@ class npc : public character {
   void set(const std::string &name, 
 	   const std::string &description, 
 	   const char symbol, 
-	   const std::vector<uint32_t> &color, 
+	   const uint32_t color, 
 	   const uint32_t speed, 
 	   const uint32_t abilities, 
 	   const uint32_t hitpoints, 
 	   const dice &damage, 
 	   const uint32_t rarity);
+
+  std::ostream &print(std::ostream &o);
+
+  char get_symbol () { return symbol; }
+  uint32_t get_speed () { return speed; }
+  uint32_t get_abilities () { return abilities; }
 };
 
 void gen_monsters(dungeon *d);

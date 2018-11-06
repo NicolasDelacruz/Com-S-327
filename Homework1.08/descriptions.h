@@ -66,7 +66,7 @@ class monster_description : public npc {
   std::ostream &print(std::ostream &o);
   npc gen_new_mon(){ 
     npc new_mon;
-    new_mon.set(name, description, symbol, color, speed.roll(), abilities,
+    new_mon.set(name, description, symbol, color.at(0), speed.roll(), abilities,
 		hitpoints.roll(), damage, rarity);
     return new_mon;
   }

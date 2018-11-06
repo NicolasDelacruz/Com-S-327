@@ -8,7 +8,9 @@
 #include "path.h"
 #include "event.h"
 #include "pc.h"
+#include "descriptions.h"
 
+/*
 static uint32_t max_monster_cells(dungeon *d)
 {
   uint32_t i;
@@ -22,26 +24,22 @@ static uint32_t max_monster_cells(dungeon *d)
 
   return sum;
 }
+*/
 
 void npc::set(const std::string &name, 
 	 const std::string &description, 
 	 const char symbol, 
-	 const std::vector<uint32_t> &color, 
+	 const uint32_t color, 
 	 const uint32_t speed, 
 	 const uint32_t abilities, 
 	 const uint32_t hitpoints, 
 	 const dice &damage,
 	 const uint32_t rarity)
 {
-  this->name = name;
-  this->description = description;
   this->symbol = symbol;
   this->color = color;
   this->speed = speed;
   this->abilities = abilities;
-  this->hitpoints = hitpoints;
-  this->damage = damage;
-  this->rarity = rarity;
 }
 
 void gen_monsters(dungeon *d)
@@ -50,13 +48,18 @@ void gen_monsters(dungeon *d)
   npc *m;
   uint32_t room;
   pair_t p;
-  const static char symbol[] = "0123456789abcdef";
-  uint32_t num_cells;
 
-  num_cells = max_monster_cells(d);
-  d->num_monsters = d->max_monsters < num_cells ? d->max_monsters : num_cells;
+  //const static char symbol[] = "0123456789abcdef";
+  //uint32_t num_cells;
+  //num_cells = max_monster_cells(d);
+  //d->num_monsters = d->max_monsters < num_cells ? d->max_monsters : num_cells;
+
+  d->num_monsters = d->monster_descriptions.size();
 
   for (i = 0; i < d->num_monsters; i++) {
+
+    //npc mon = d->monster_descriptions.at(i).gen_new_mon();
+
     m = new npc;
     memset(m, 0, sizeof (*m));
     
@@ -77,7 +80,8 @@ void gen_monsters(dungeon *d)
     m->sequence_number = ++d->character_sequence_number;
     m->characteristics = rand() & 0x0000000f;
     /*    m->npc->characteristics = 0xf;*/
-    m->symbol = symbol[m->characteristics];
+    //m->symbol = symbol[m->characteristics];
+    m->symbol = d->monster_descriptions.at(i).gen_new_mon().get_symbol();
     m->have_seen_pc = 0;
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
 
