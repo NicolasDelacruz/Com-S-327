@@ -10,22 +10,6 @@
 #include "pc.h"
 #include "descriptions.h"
 
-/*
-static uint32_t max_monster_cells(dungeon *d)
-{
-  uint32_t i;
-  uint32_t sum;
-
-  for (i = sum = 0; i < d->num_rooms; i++) {
-    if (!pc_in_room(d, i)) {
-      sum += d->rooms[i].size[dim_y] * d->rooms[i].size[dim_x];
-    }
-  }
-
-  return sum;
-}
-*/
-
 void npc::set(const std::string &name, 
 	 const std::string &description, 
 	 const char symbol, 
@@ -48,11 +32,6 @@ void gen_monsters(dungeon *d)
   npc *m;
   uint32_t room;
   pair_t p;
-
-  //const static char symbol[] = "0123456789abcdef";
-  //uint32_t num_cells;
-  //num_cells = max_monster_cells(d);
-  //d->num_monsters = d->max_monsters < num_cells ? d->max_monsters : num_cells;
 
   d->num_monsters = d->monster_descriptions.size();
 
@@ -79,7 +58,7 @@ void gen_monsters(dungeon *d)
     m->color = mon.get_color();
     m->alive = 1;
     m->sequence_number = ++d->character_sequence_number;
-    m->characteristics = rand() & 0x0000000f;
+    m->characteristics = mon.get_abilities();
     m->symbol = mon.get_symbol();
     m->have_seen_pc = 0;
     m->kills[kill_direct] = m->kills[kill_avenged] = 0;
