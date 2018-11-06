@@ -201,7 +201,7 @@ static character *io_nearest_visible_monster(dungeon *d)
 }
 
 
-
+//function created to update color array to put colors for the 
 void io_updateArray(dungeon *d)
 {
   uint32_t y, x;
@@ -263,10 +263,6 @@ void io_display(dungeon *d)
   uint32_t illuminated;
   character *c;
   int32_t visible_monsters;
-
-
-  io_updateArray(d);
-
 
   clear();
   for (visible_monsters = -1, y = 0; y < 21; y++) {
@@ -356,7 +352,7 @@ void io_display_no_fog(dungeon *d)
   character *c;
 
 
-  io_updateArray(d);
+  //io_updateArray(d);
 
   clear();
   for (y = 0; y < 21; y++) {
