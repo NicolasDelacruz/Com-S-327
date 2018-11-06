@@ -1,0 +1,12 @@
+Author: Nicolas De la Cruz
+Credit: Jeremy Scheaffer
+
+Program description:
+    -This program is generate monsters and item objects from the description files.
+    -Creating objects of items:
+    	      -Created a new_item class to generate these items, and used the same values that we stored in the objects_description class.
+	      -placing the objects in the map, I added another terrain type that indicated the type of item
+	      -if the terrain type was item then the program calls a function get_item_symbol and get_color that would return the symbol and color(s)
+    -Creating objects of monsters:
+    	      -For creating monster types I created an method in the monster_description class (which can store all the monster information) and created a new npc instance in that method and returned it.
+	      -This would then be used in gen_monsters when we generate monsters to iterate through the monsters stored in the vector in the dungeon
