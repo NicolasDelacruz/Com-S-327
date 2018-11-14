@@ -53,35 +53,42 @@ void do_combat(dungeon *d, character *atk, character *def)
   };
   int part;
 
-  if (def->alive) {
-    def->alive = 0;
-    charpair(def->position) = NULL;
+  if (def->alive ) {
+
+    //def->hp -= atk->damage->roll();
+
+    def->hp -= 20;
     
-    if (def != d->PC) {
-      d->num_monsters--;
-    } else {
-      if ((part = rand() % (sizeof (organs) / sizeof (organs[0]))) < 26) {
-        io_queue_message("As %s%s eats your %s,", is_unique(atk) ? "" : "the ",
-                         atk->name, organs[rand() % (sizeof (organs) /
-                                                     sizeof (organs[0]))]);
-        io_queue_message("   ...you wonder if there is an afterlife.");
-        /* Queue an empty message, otherwise the game will not pause for *
-         * player to see above.                                          */
-        io_queue_message("");
+    if (def->hp < 1){
+      def->alive = 0;
+      charpair(def->position) = NULL;
+
+      if (def != d->PC) {
+	d->num_monsters--;
       } else {
-        io_queue_message("Your last thoughts fade away as "
-                         "%s%s eats your %s...",
-                         is_unique(atk) ? "" : "the ",
-                         atk->name, organs[part]);
-        io_queue_message("");
+	if ((part = rand() % (sizeof (organs) / sizeof (organs[0]))) < 26) {
+	  io_queue_message("As %s%s eats your %s,", is_unique(atk) ? "" : "the ",
+			   atk->name, organs[rand() % (sizeof (organs) /
+						       sizeof (organs[0]))]);
+	  io_queue_message("   ...you wonder if there is an afterlife.");
+	  /* Queue an empty message, otherwise the game will not pause for *
+	   * player to see above.                                          */
+	  io_queue_message("");
+	} else {
+	  io_queue_message("Your last thoughts fade away as "
+			   "%s%s eats your %s...",
+			   is_unique(atk) ? "" : "the ",
+			   atk->name, organs[part]);
+	  io_queue_message("");
+	}
+	/* Queue an empty message, otherwise the game will not pause for *
+	 * player to see above.                                          */
+	io_queue_message("");
       }
-      /* Queue an empty message, otherwise the game will not pause for *
-       * player to see above.                                          */
-      io_queue_message("");
+      atk->kills[kill_direct]++;
+      atk->kills[kill_avenged] += (def->kills[kill_direct] +
+				   def->kills[kill_avenged]);
     }
-    atk->kills[kill_direct]++;
-    atk->kills[kill_avenged] += (def->kills[kill_direct] +
-                                  def->kills[kill_avenged]);
   }
 
   if (atk == d->PC) {
@@ -117,7 +124,9 @@ void move_character(dungeon *d, character *c, pair_t next)
   if (charpair(next) &&
       ((next[dim_y] != c->position[dim_y]) ||
        (next[dim_x] != c->position[dim_x]))) {
-    do_combat(d, c, charpair(next));
+    if(c == d->PC || charpair(next) == d->PC){
+      do_combat(d, c, charpair(next));
+    }
   } else {
     /* No character in new position. */
 
