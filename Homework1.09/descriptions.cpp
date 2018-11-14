@@ -1078,6 +1078,8 @@ npc *monster_description::generate_monster(dungeon *d)
 
   n = new npc(d, m);
 
+  n->hp = 100; //setting the hp of monsters to 100
+
   heap_insert(&d->events, new_event(d, event_character_turn, n, 0));
 
   return n;

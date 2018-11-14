@@ -46,6 +46,8 @@ void config_pc(dungeon *d)
   d->PC->damage = &pc_dice;
   d->PC->name = "Isabella Garcia-Shapiro";
 
+  d->PC->hp = 100; //setting hit points to 100
+
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
   dijkstra(d);
