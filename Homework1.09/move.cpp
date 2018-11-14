@@ -60,6 +60,9 @@ void do_combat(dungeon *d, character *atk, character *def)
     def->hp -= 20;
     
     if (def->hp < 1){
+      if(def->symbol == 'S'){
+	d->boss_killed = 1;
+      }
       def->alive = 0;
       charpair(def->position) = NULL;
 
