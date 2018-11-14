@@ -100,7 +100,21 @@ class dungeon {
   std::vector<object_description> object_descriptions;
 
   object *item_slot[10];//the item slot of 10 items
-  uint32_t items_picked;
+  uint32_t items_picked;//the number of items picked up
+
+  /* Items that can be equipped */
+  object *weapon;
+  object *offhand;
+  object *ranged;
+  object *armor;
+  object *helmet;
+  object *cloak;
+  object *gloves;
+  object *boots;
+  object *amulet;
+  object *light;
+  object *ring_l;
+  object *ring_r;
 };
 
 void init_dungeon(dungeon *d);

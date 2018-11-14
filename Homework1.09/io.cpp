@@ -834,6 +834,35 @@ static void io_list_monsters_display(dungeon *d,
   free(s);
 }
 
+static void io_list_items_display(dungeon *d)
+{
+  uint32_t i, y;
+  y = 3;
+
+  clear();
+  
+  mvprintw(y, 9, " %-60s ", "");
+  /* Borrow the first element of our array for this string: */
+
+  y++;
+  mvprintw(y, 9, "Item Inventory. Hit ESC to exit.");
+
+  if(d->items_picked > 1){
+    for(i = 0; i < d->items_picked; ++i){
+      y++;
+      mvprintw(y, 9, "Item %u: %c", i,d->item_slot[i]->get_symbol());
+    }
+  }
+
+  while (getch() != 27 /* escape */){
+    //does nothing
+  }
+
+
+  /* And redraw the dungeon */
+  io_display(d);
+}
+
 static void io_list_monsters(dungeon *d)
 {
   character **c;
@@ -981,6 +1010,10 @@ void io_handle_input(dungeon *d)
       break;
     case 'm':
       io_list_monsters(d);
+      fail_code = 1;
+      break;
+    case 'i':
+      io_list_items_display(d); //added to print inventory list.
       fail_code = 1;
       break;
     case 'q':
