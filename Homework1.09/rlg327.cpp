@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
   if (!do_load && !do_image) {
     io_queue_message("Seed is %u.", seed);
   }
-  while ( (!d.boss_killed) && pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {
+  while ( (!d.boss_killed) && pc_is_alive(&d) && !d.quit) {
     do_moves(&d);
   }
   io_display(&d);

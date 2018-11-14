@@ -834,8 +834,8 @@ static void io_list_monsters_display(dungeon *d,
   free(s);
 }
 
-static void io_list_items_display(dungeon *d)
-{
+static void io_list_items(dungeon *d)
+{  
   uint32_t i, y;
   y = 3;
 
@@ -853,6 +853,13 @@ static void io_list_items_display(dungeon *d)
       mvprintw(y, 9, "Item %u: %c", i,d->item_slot[i]->get_symbol());
     }
   }
+}
+
+/* Lists items that user picked up */
+static void io_list_items_display(dungeon *d)
+{
+
+  io_list_items(d);
 
   while (getch() != 27 /* escape */){
     //does nothing
@@ -861,6 +868,102 @@ static void io_list_items_display(dungeon *d)
 
   /* And redraw the dungeon */
   io_display(d);
+}
+
+static void equip_item(dungeon *d, object *o, uint32_t i)
+{
+  switch (o->get_type()){
+  case 0:
+    
+    break;
+  default:
+   
+   break;
+  }
+}
+
+static void io_equip_item(dungeon *d)
+{
+  io_list_items(d);
+  
+  mvprintw(3, 9, "Put number you want to equip.");
+  
+  char com = 0;
+  uint32_t index;
+  
+  while (com != 27){
+    //does nothing
+    com = getch();
+    switch (com){
+    case '0':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '1':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '2':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '3':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '4':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '5':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '6':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '7':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '8':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    case '9':
+      if(d->items_picked > ((unsigned) com)){
+	index = ((unsigned) com);
+	equip_item(d, d->item_slot[index], index);
+      }
+      break;
+    default:
+      com = 27;
+      break;
+    }
+  }  
+  
+  /* And redraw the dungeon */
+  io_display(d);
+  
 }
 
 static void io_list_monsters(dungeon *d)
@@ -1015,6 +1118,9 @@ void io_handle_input(dungeon *d)
     case 'i':
       io_list_items_display(d); //added to print inventory list.
       fail_code = 1;
+      break;
+    case 'w':
+      io_equip_item(d);
       break;
     case 'q':
       /* Demonstrate use of the message queue.  You can use this for *
