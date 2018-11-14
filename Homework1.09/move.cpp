@@ -286,7 +286,6 @@ uint32_t move_pc(dungeon *d, uint32_t dir)
   next[dim_y] = d->PC->position[dim_y];
   next[dim_x] = d->PC->position[dim_x];
 
-
   switch (dir) {
   case 1:
   case 2:
@@ -340,6 +339,12 @@ uint32_t move_pc(dungeon *d, uint32_t dir)
     move_character(d, d->PC, next);
     dijkstra(d);
     dijkstra_tunnel(d);
+
+    if (d->objmap[next[dim_y]][next[dim_x]] != NULL && d->items_picked < 10) {
+      d->item_slot[d->items_picked] = d->objmap[next[dim_y]][next[dim_x]];
+      d->items_picked += 1;
+      d->objmap[next[dim_y]][next[dim_x]] = NULL;
+    }
 
     return 0;
   } else if (mappair(next) < ter_floor) {

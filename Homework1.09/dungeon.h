@@ -98,6 +98,9 @@ class dungeon {
   uint32_t boss_killed;
   std::vector<monster_description> monster_descriptions;
   std::vector<object_description> object_descriptions;
+
+  object *item_slot[10];//the item slot of 10 items
+  uint32_t items_picked;
 };
 
 void init_dungeon(dungeon *d);
