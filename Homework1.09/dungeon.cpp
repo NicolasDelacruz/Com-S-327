@@ -624,6 +624,9 @@ void init_dungeon(dungeon *d)
 
   memset(d->item_slot, 0, sizeof (d->item_slot));//initializing the item slot
   d->items_picked = 0;
+  d->weapon = d->offhand =  d->ranged = d->armor = NULL;
+  d->helmet = d->cloak = d->gloves = d->boots = d->amulet = d->light = NULL;
+  d->ring_l = d->ring_r = NULL;
 }
 
 int write_dungeon_map(dungeon *d, FILE *f)

@@ -840,17 +840,15 @@ static void io_list_items(dungeon *d)
   y = 3;
 
   clear();
-  
-  mvprintw(y, 9, " %-60s ", "");
-  /* Borrow the first element of our array for this string: */
 
-  y++;
-  mvprintw(y, 9, "Item Inventory. Hit ESC to exit.");
-
-  if(d->items_picked > 1){
+  if(d->items_picked >= 0 && d->item_slot[0] != 0){
     for(i = 0; i < d->items_picked; ++i){
       y++;
-      mvprintw(y, 9, "Item %u: %c", i,d->item_slot[i]->get_symbol());
+      if(d->item_slot[i] != NULL){
+	mvprintw(y, 9, "Item %u: %c", i,d->item_slot[i]->get_symbol());
+      }else{
+	mvprintw(y, 9, "Item %u: ", i);
+      }
     }
   }
 }
@@ -858,8 +856,9 @@ static void io_list_items(dungeon *d)
 /* Lists items that user picked up */
 static void io_list_items_display(dungeon *d)
 {
-
   io_list_items(d);
+
+  mvprintw(3, 9, "Item Inventory. Hit ESC to exit.");
 
   while (getch() != 27 /* escape */){
     //does nothing
@@ -873,12 +872,127 @@ static void io_list_items_display(dungeon *d)
 static void equip_item(dungeon *d, object *o, uint32_t i)
 {
   switch (o->get_type()){
-  case 0:
-    
+  case 1:
+    //weapon
+    if(d->weapon == NULL){
+      d->weapon = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->weapon = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
     break;
-  default:
-   
-   break;
+  case 2:
+    //offhand
+    if(d->offhand == NULL){
+      d->offhand = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->offhand = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 3:
+    //ranged
+    if(d->ranged == NULL){
+      d->ranged = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->ranged = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 4:
+    //light
+    if(d->light == NULL){
+      d->light = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->light = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 5:
+    //armor
+    if(d->armor == NULL){
+      d->armor = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->armor = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 6:
+    //helmet
+    if(d->helmet == NULL){
+      d->helmet = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->helmet = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 7:
+    //cloak
+    if(d->cloak == NULL){
+      d->cloak = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->cloak = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 8:
+    //gloves
+    if(d->gloves == NULL){
+      d->gloves = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->gloves = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 9:
+    //boots
+    if(d->boots == NULL){
+      d->boots = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->boots = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 10:
+    //amulet
+    if(d->amulet == NULL){
+      d->amulet = o;
+      d->item_slot[i] = NULL;
+    }else {
+      d->amulet = d->item_slot[i];
+      d->item_slot[i] = o;
+    }
+    break;
+  case 11:
+    //ring
+    if(d->ring_l == NULL){
+      if(d->ring_l == NULL){
+	d->ring_l = o;
+	d->item_slot[i] = NULL;
+      }else {
+	d->ring_l = d->item_slot[i];
+	d->item_slot[i] = o;
+      }
+    }
+    else{
+      if(d->ring_r == NULL){
+	d->ring_r = o;
+	d->item_slot[i] = NULL;
+      }else {
+	d->ring_r = d->item_slot[i];
+	d->item_slot[i] = o;
+      } 
+    }
+    break;
   }
 }
 
@@ -896,63 +1010,73 @@ static void io_equip_item(dungeon *d)
     com = getch();
     switch (com){
     case '0':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 0){
+	index = 0;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '1':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 1){
+	index = 1;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '2':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 2){
+	index = 2;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '3':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 3){
+	index = 3;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '4':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 4){
+	index = 4;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '5':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 5){
+	index = 5;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '6':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 6){
+	index = 6;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '7':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 7){
+	index = 7;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '8':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 8){
+	index = 8;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     case '9':
-      if(d->items_picked > ((unsigned) com)){
-	index = ((unsigned) com);
+      if(d->items_picked > 9){
+	index = 9;
 	equip_item(d, d->item_slot[index], index);
+	com = 27;
       }
       break;
     default:
