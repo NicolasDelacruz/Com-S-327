@@ -55,9 +55,7 @@ void do_combat(dungeon *d, character *atk, character *def)
 
   if (def->alive ) {
 
-    //def->hp -= atk->damage->roll();
-
-    def->hp -= 20;
+    def->hp -= atk->damage->roll();
     
     if (def->hp < 1){
       if(def->symbol == 'S'){

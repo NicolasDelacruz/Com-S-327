@@ -1246,9 +1246,6 @@ void io_handle_input(dungeon *d)
     case 'w':
       io_equip_item(d);
       break;
-    case 'e':
-      io_equipment_display(d);
-      break;
     case 'q':
       /* Demonstrate use of the message queue.  You can use this for *
        * printf()-style debugging (though gdb is probably a better   *

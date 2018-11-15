@@ -2,11 +2,21 @@ Author: Nicolas De la Cruz
 Credit: Jeremy Scheaffer
 
 Program description:
-    -This program is generate monsters and item objects from the description files.
-    -Creating objects of items:
-    	      -Created a new_item class to generate these items, and used the same values that we stored in the objects_description class.
-	      -placing the objects in the map, I added another terrain type that indicated the type of item
-	      -if the terrain type was item then the program calls a function get_item_symbol and get_color that would return the symbol and color(s)
-    -Creating objects of monsters:
-    	      -For creating monster types I created an method in the monster_description class (which can store all the monster information) and created a new npc instance in that method and returned it.
-	      -This would then be used in gen_monsters when we generate monsters to iterate through the monsters stored in the vector in the dungeon
+	-Update attack to:
+		*NPC do not attack other NPC
+		*Combat done by losing hp not one hit kill
+		*Attack is done by rolling dice and using that as damage
+		*Character dies when hp goes below 0
+	-Game is won only if BOSS is killed
+	-If PC walks over an item and has a carry slot open then automatically picks item up
+	        *Carry slot is 10 items open
+
+	-Be able to equip items
+	-Command w to wear item
+	-Command i to list inventory in carry slots
+	
+
+Was unable to implement:
+    -Command t: take off an item
+    -Command d: drop an item
+    -Command e: list PC equipment
