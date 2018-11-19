@@ -5,32 +5,40 @@
 #include <iostream>
 
 #include "field.h"
+#include "io.h"
 
 int main(int argc, char *argv[])
 {
   field f;
   using namespace std;
 
+
+  int i,j;
+  char temp;
+
   init_field(&f);
   gen_field(&f);
 
-  char temp;
+  io_init_terminal();
 
-  int i, j;
+  //io_display(&f);
+
   for(i = 0; i < FIELD_SIZE; ++i){
     for(j = 0; j < FIELD_SIZE; ++j){
-      temp = f.display_map[i][j];
-      cout << temp;
+      temp = f.map[i][j];
+      if(temp == '\0'){
+	cout << ' ';
+      }else {
+	cout << temp;
+      }
     }
     cout << endl;
   }
 
 
-  /*
-  io_display(&d);
-  
+  /*  
   while ( !(game_over(&f)) && !f.quit) {
-    do_moves(&d);
+    io_handle_input(&d);
   }
 
   if(f.win){

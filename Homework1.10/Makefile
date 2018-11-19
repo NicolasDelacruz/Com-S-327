@@ -7,8 +7,8 @@ CFLAGS = -Wall -Werror -ggdb3 -funroll-loops
 CXXFLAGS = -Wall -Werror -ggdb3 -funroll-loops -std=c++11
 LDFLAGS = -lncurses
 
-BIN = minesweerper.o
-OBJS = minesweeper.o field.o
+BIN = minesweeper
+OBJS = minesweeper.o field.o io.o
 all: $(BIN) etags
 
 $(BIN): $(OBJS)
@@ -37,4 +37,4 @@ clobber: clean
 
 etags:
 	@$(ECHO) Updating TAGS
-	@etags *.c *.cpp *.h
+	@etags *.cpp *.h

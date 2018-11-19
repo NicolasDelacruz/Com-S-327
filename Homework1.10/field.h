@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define FIELD_SIZE           10
-#define NUM_MINES            8
+#define NUM_MINES            3
 
 
 class field {
