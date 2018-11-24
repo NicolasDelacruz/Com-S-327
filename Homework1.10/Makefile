@@ -7,8 +7,8 @@ CFLAGS = -Wall -Werror -ggdb3 -funroll-loops
 CXXFLAGS = -Wall -Werror -ggdb3 -funroll-loops -std=c++11
 LDFLAGS = -lncurses
 
-BIN = minesweeper
-OBJS = minesweeper.o field.o io.o
+BIN = connectfour
+OBJS = connectfour.o grid.o io.o
 all: $(BIN) etags
 
 $(BIN): $(OBJS)

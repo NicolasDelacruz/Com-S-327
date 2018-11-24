@@ -4,7 +4,39 @@
 #include <stdlib.h>
 
 #include "io.h"
-#include "field.h"
+#include "grid.h"
+
+
+static void place_border(void)
+{
+  int i, j, width, height;
+  
+  width = GRID_WIDTH + 2;
+  height = GRID_HEIGHT + 2;
+
+
+  for(i = 0; i < height; ++i){
+    for(j = 0; j < width; ++j){
+      
+      if((i == 0 && j == 0) || (i== height-1 && j == width -1) || (i == 0 && j == width -1) || (i== height-1 && j == 0)){
+	attron(COLOR_PAIR(3));
+	mvaddch(i+1, j+1, '*');
+	attroff(COLOR_PAIR(3));
+      }
+      else if((i == 0 && j > 0) || (i == height - 1 && j > 0)){
+	attron(COLOR_PAIR(1));
+	mvaddch(i+1, j+1, '-');
+	attroff(COLOR_PAIR(1));
+      }
+      else if( (i > 0 && j == 0) || (i > 0 && j == width -1) ){
+	attron(COLOR_PAIR(1));
+	mvaddch(i+1, j+1, '|');
+	attroff(COLOR_PAIR(1));
+      }
+    
+    }
+  }
+}
 
 void io_init_terminal(void)
 {
@@ -28,45 +60,33 @@ void io_reset_terminal(void)
   endwin();
 }
 
-void io_display(field *f)
+void io_display(grid *g)
 {
   int i, j;
 
   clear();
 
-  /*
-  for(i = 0; i < FIELD_SIZE; ++i){
-    for(j = 0; j < FIELD_SIZE; ++j){
-      switch(f->display_map[i][j]){
-      case 'X':
-	attron(COLOR_PAIR(COLOR_BLUE));
-	mvaddch(i+1, j+1, 'X');
-	attroff(COLOR_PAIR(COLOR_BLUE));
-	break;
-      case '*':
-	attron(COLOR_PAIR(COLOR_RED));
-        mvaddch(i+1, j+1, '*');
-	attroff(COLOR_PAIR(COLOR_RED));
-	break;
+  place_border();
+
+  for(i = 0; i < GRID_HEIGHT; ++i){
+    for(j = 0; j < GRID_WIDTH; ++j){
+      switch(g->map[i][j]){
+      case 'O':
+	attron(COLOR_PAIR(g->color_map[i][j]));
+	mvaddch(i+2, j+2, 'O');
+	attroff(COLOR_PAIR(g->color_map[i][j]));
+	break;      
       default:
-	attron(COLOR_PAIR(COLOR_YELLOW));
-        mvaddch(i+1, j+1, '0');
-	attroff(COLOR_PAIR(COLOR_YELLOW));
+	attron(COLOR_PAIR(6));
+        mvaddch(i+2, j+2, 'X');
+	attroff(COLOR_PAIR(6));
 	break;
       }
     }
     putchar('\n');
   }
-  */
-  
-  for(i = 0; i < FIELD_SIZE; ++i){
-    for(j = 0; j < FIELD_SIZE; ++j){
-      attron(COLOR_PAIR(COLOR_BLUE));
-      mvaddch(i+1, j+1, f->map[i][j]);
-      attroff(COLOR_PAIR(COLOR_BLUE));
-    }
-  }
-  
+
+  putchar('\n');
 
   refresh();
 }
