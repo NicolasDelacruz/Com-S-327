@@ -6,6 +6,30 @@
 #include "io.h"
 #include "grid.h"
 
+static void check_game_over(grid *g)
+{
+  int i, j, tie;
+
+  tie = 1;
+
+  //check if game is tied
+  for(i = 0; i < GRID_HEIGHT; ++i){
+    for(j = 0; j < GRID_WIDTH; ++j){
+      if(g->map[i][j] == 0){
+	tie = 0;
+      }
+    }
+  }
+
+  if(tie){
+    g->game_end = 't';
+    g->game_over = 1;
+  }
+
+
+  
+
+}
 
 static int get_lowest_location(grid *g, int x)
 {
@@ -130,10 +154,8 @@ void io_handle_input(grid *g)
   mvaddch(0, location, 'O');
   attroff(COLOR_PAIR(g->turn));
 
-  key = getch();
-
-  while (key != 't') {
-    switch(key){
+  while (!g->game_over) {
+    switch(key = getch()){
     case 'a':
     case '4':
       if(location > 2){
@@ -164,13 +186,6 @@ void io_handle_input(grid *g)
 	break;
       }
 
-      //display new map
-      io_reset_terminal();
-      io_display(g);
-      attron(COLOR_PAIR(g->turn));
-      mvaddch(0, location, 'O');
-      attroff(COLOR_PAIR(g->turn));
-
       //switch turns
       if(g->turn == 1){
 	g->turn = 2;
@@ -178,12 +193,19 @@ void io_handle_input(grid *g)
       else if(g->turn == 2){
 	g->turn = 1;
       }
+
+      //display new map
+      io_reset_terminal();
+      io_display(g);
+      attron(COLOR_PAIR(g->turn));
+      mvaddch(0, location, 'O');
+      attroff(COLOR_PAIR(g->turn));
       break;
     case 't':
       g->game_over = 1;
       break;
     }
-    key = getch();
+    check_game_over(g);
   }
 
 }

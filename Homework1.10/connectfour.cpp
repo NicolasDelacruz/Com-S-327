@@ -24,6 +24,10 @@ int main(int argc, char *argv[])
   }
 
   io_reset_terminal();
-  
+
+  if(g.game_end == 't'){
+    cout << "TIE GAME!!" << endl;
+  }  
+
   return 0;
 }

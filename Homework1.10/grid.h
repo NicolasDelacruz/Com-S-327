@@ -13,7 +13,7 @@ class grid {
  public:
  grid() : map{0}, game_over(0), quit(0) {}
   char map[GRID_HEIGHT][GRID_WIDTH];
-  int color_map[GRID_HEIGHT][GRID_WIDTH];
+  char game_end;
   int turn;
   int game_over;
   int quit;
