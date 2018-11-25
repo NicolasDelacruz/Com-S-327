@@ -10,6 +10,7 @@ void init_grid(grid *g){
   memset(g->color_map, sizeof(g->color_map), 0);
 
   //initialize variables;
+  g->turn = 1;
   g->quit = 0;
   g->game_over = 0;
 }

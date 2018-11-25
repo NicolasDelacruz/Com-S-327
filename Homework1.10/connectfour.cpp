@@ -16,9 +16,14 @@ int main(int argc, char *argv[])
 
   io_init_terminal();
 
+
   io_display(&g);
 
-  //io_reset_terminal();
+  while(!g.game_over){
+    io_handle_input(&g);
+  }
+
+  io_reset_terminal();
   
   return 0;
 }

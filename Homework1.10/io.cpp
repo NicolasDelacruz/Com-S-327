@@ -90,3 +90,67 @@ void io_display(grid *g)
 
   refresh();
 }
+
+
+void io_handle_input(grid *g)
+{
+  int key, location;
+
+  location = 2;
+  
+  io_reset_terminal();
+  io_display(g);
+  attron(COLOR_PAIR(g->turn));
+  mvaddch(0, location, 'O');
+  attroff(COLOR_PAIR(g->turn));
+
+  key = getch();
+
+  while (key != 't') {
+    switch(key){
+    case 'a':
+    case '4':
+      if(location > 2){
+	location--;
+      }
+      io_reset_terminal();
+      io_display(g);
+      attron(COLOR_PAIR(g->turn));
+      mvaddch(0, location, 'O');
+      attroff(COLOR_PAIR(g->turn));
+      break;
+    case 'd':
+    case '6':
+      if(location < 8){
+	location++;
+      }
+      io_reset_terminal();
+      io_display(g);
+      attron(COLOR_PAIR(g->turn));
+      mvaddch(0, location, 'O');
+      attroff(COLOR_PAIR(g->turn));
+      break;
+    case 's':
+    case '5':
+      if(g->turn == 1){
+	g->turn = 2;
+      }
+      else if(g->turn == 2){
+	g->turn = 1;
+      }
+
+
+      io_reset_terminal();
+      io_display(g);
+      attron(COLOR_PAIR(g->turn));
+      mvaddch(0, location, 'O');
+      attroff(COLOR_PAIR(g->turn));
+      break;
+    case 'q':
+      g->game_over = 1;
+      break;
+    }
+    key = getch();
+  }
+
+}
