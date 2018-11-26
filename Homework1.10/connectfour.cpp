@@ -27,7 +27,16 @@ int main(int argc, char *argv[])
 
   if(g.game_end == 't'){
     cout << "TIE GAME!!" << endl;
-  }  
+  }
+  else if(g.game_end == '1'){
+    cout << "PLAYER 1 WON!!" << endl;
+  }
+  else if(g.game_end == '2'){
+    cout << "PLAYER 2 WON!!" << endl;
+  }
+  else if(g.game_end == 'q'){
+    cout << "Someone quit the game.";
+  }
 
   return 0;
 }

@@ -6,11 +6,22 @@
 #include "io.h"
 #include "grid.h"
 
-static void check_game_over(grid *g)
+static void check_game_over(grid *g, int y, int x)
 {
-  int i, j, tie;
+  int i, j, tie, down, mindown;
+  char player_turn;
+
+  down = 0;
+  mindown = 0;
 
   tie = 1;
+
+  if(g->turn == 1){
+    player_turn = '2';
+  }
+  else if(g->turn == 2){
+    player_turn = '1';
+  }
 
   //check if game is tied
   for(i = 0; i < GRID_HEIGHT; ++i){
@@ -20,14 +31,38 @@ static void check_game_over(grid *g)
       }
     }
   }
-
+  
+  //checks tie
   if(tie){
     g->game_end = 't';
     g->game_over = 1;
   }
-
-
   
+
+  //check straight down win
+  mindown = y + 4;
+  if(mindown >= GRID_HEIGHT){
+    mindown = GRID_HEIGHT-1;
+  }
+
+  for(i = y; i <= mindown; ++i){
+    if(g->map[i][x] == player_turn){
+      down++;
+    }
+  }
+
+  //check left win (<---)
+
+  //check right win (--->)
+
+  //check top left win
+
+  //check top right win
+
+  if(down >= 4){
+    g->game_end = player_turn;
+    g->game_over = 1;
+  }
 
 }
 
@@ -47,14 +82,15 @@ static int place_move(grid *g, int x){
 
   y = get_lowest_location(g, x);
   if(y == -1){
-    return 0;
+    return y;
   }
   if(g->turn == 1){
     g->map[y][x] = '1';
   }else{
     g->map[y][x] = '2';
   }
-  return 1;
+
+  return y;
 }
 
 
@@ -144,7 +180,7 @@ void io_display(grid *g)
 
 void io_handle_input(grid *g)
 {
-  int key, location;
+  int key, location, ylocation;
 
   location = 2;
   
@@ -182,7 +218,8 @@ void io_handle_input(grid *g)
     case '5':
       //add new thing
       //if place_move failed then end case
-      if(!place_move(g, location-2)){
+      ylocation = place_move(g, location-2);
+      if(ylocation == -1){
 	break;
       }
 
@@ -200,12 +237,15 @@ void io_handle_input(grid *g)
       attron(COLOR_PAIR(g->turn));
       mvaddch(0, location, 'O');
       attroff(COLOR_PAIR(g->turn));
+
+
+      check_game_over(g, ylocation, location - 2);
       break;
-    case 't':
+    case 'q':
+      g->game_end = 'q';
       g->game_over = 1;
       break;
     }
-    check_game_over(g);
   }
 
 }
