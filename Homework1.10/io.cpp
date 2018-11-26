@@ -8,19 +8,23 @@
 
 static void check_game_over(grid *g, int y, int x)
 {
-  int i, j, tie, down, mindown;
-  char player_turn;
+  int i, j, tie, down, mindown, horizontal;
+  char player_turn, not_turn;
 
   down = 0;
   mindown = 0;
+  horizontal = 0;
+  
 
   tie = 1;
 
   if(g->turn == 1){
     player_turn = '2';
+    not_turn = '1';
   }
   else if(g->turn == 2){
     player_turn = '1';
+    not_turn = '2';
   }
 
   //check if game is tied
@@ -51,7 +55,24 @@ static void check_game_over(grid *g, int y, int x)
     }
   }
 
-  //check left win (<---)
+  //check horizontal win (---)
+
+  for(i = 0; i < GRID_WIDTH; ++i){
+    if(g->map[y][i] == player_turn){
+      horizontal++;
+    }
+    else if(g->map[y][i] == not_turn){
+      horizontal = 0;
+    }
+
+    if(g->map[y][i] == 0){
+      break;
+    }
+  
+    if(horizontal > 3){
+      break;
+    }
+  }
 
   //check right win (--->)
 
@@ -59,7 +80,7 @@ static void check_game_over(grid *g, int y, int x)
 
   //check top right win
 
-  if(down >= 4){
+  if(down >= 4 || horizontal >= 4){
     g->game_end = player_turn;
     g->game_over = 1;
   }
