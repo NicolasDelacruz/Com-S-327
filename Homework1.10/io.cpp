@@ -62,10 +62,6 @@ static void check_game_over(grid *g, int y, int x)
     else if(g->map[y][i] == not_turn){
       horizontal = 0;
     }
-
-    if(g->map[y][i] == 0){
-      break;
-    }
   
     if(horizontal > 3){
       break;
