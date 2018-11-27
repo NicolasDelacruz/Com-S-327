@@ -1,0 +1,60 @@
+commit af8c8ea92a93f8c19a28467061604167c490df22
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Mon Nov 26 18:36:36 2018 -0600
+
+    Found bug with horizontal win. Bug fixed. No other known bugs. Will continue to look.
+
+commit 0db634ae928c72c992db9cae6c1e85ab27a964b3
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Mon Nov 26 18:34:20 2018 -0600
+
+    Program now checks for all possible wins. Will look for bugs.
+
+commit 53d4f6258b7202483f6920f37a8add8ce6aee1c7
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Nov 25 20:52:59 2018 -0600
+
+    Program checks for horizontal win
+
+commit 16d51bb19df994fcf5ff75573c1d58f753fce9e8
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Nov 25 19:47:23 2018 -0600
+
+    Program detects vertical win.
+
+commit baa6fea09553b91acb1029549818f941ea37bdb0
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Nov 25 17:43:53 2018 -0600
+
+    Game now ends on tie.
+
+commit 13896b779b857228e50e79175347b7e963fa0896
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Nov 25 16:36:16 2018 -0600
+
+    Added placing the pieces to the board.
+
+commit 012f453e19f7c4cbfd27e64275236f15f3d19e7e
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sat Nov 24 21:12:44 2018 -0600
+
+    Started handling input and correct display.
+
+commit 598e2995804a742c5d9b05f2191eaf1622e743f3
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Fri Nov 23 20:58:02 2018 -0600
+
+    Switched to connect four. The grid and border are printed. Need to implement movement.
+
+commit 186afa2cdb1a5e8fc1c9fd5e8995ab970a76ae78
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Nov 18 19:09:12 2018 -0600
+
+    Added the numbers to the key map. Bug on last line
+
+commit 8167eff60a0a904bb8bb70de086f5eac5d302eb9
+Author: NicolasDelacruz <nicolasd@iastate.edu>
+Date:   Sun Nov 18 15:50:23 2018 -0600
+
+    First commit that has new project of minesweeper game. CUrrently prints out the display map with generated mines.
+

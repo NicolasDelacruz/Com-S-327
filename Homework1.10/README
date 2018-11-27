@@ -1,0 +1,10 @@
+Author: Nicolas De la Cruz
+Credit: Jeremy Scheaffer
+
+Program description:
+	This program is an implementation of the classic connect four, but implemented in C++.
+	The rules are the same, alternating between players and the first person to connect four in a horizontal, vertical, or any direction diagonal wins.
+	To move the pieces use the following:
+	   a or 4: Move piece left
+	   d or 6: Move piece right
+	   s or 5: Drop piece in current spot (NOTE: If column is full the game will not allow you to skip turn, must select a valid drop)
