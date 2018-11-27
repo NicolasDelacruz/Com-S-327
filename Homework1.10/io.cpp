@@ -8,12 +8,16 @@
 
 static void check_game_over(grid *g, int y, int x)
 {
-  int i, j, tie, down, mindown, horizontal;
+  int i, j, tie, down, mindown, horizontal, downleft, downright, upleft, upright;
   char player_turn, not_turn;
 
   down = 0;
   mindown = 0;
   horizontal = 0;
+  downleft = 0;
+  downright = 0;
+  upleft = 0;
+  upright = 0;
   
 
   tie = 1;
@@ -35,13 +39,7 @@ static void check_game_over(grid *g, int y, int x)
       }
     }
   }
-  
-  //checks tie
-  if(tie){
-    g->game_end = 't';
-    g->game_over = 1;
-  }
-  
+
 
   //check straight down win
   mindown = y + 4;
@@ -74,13 +72,54 @@ static void check_game_over(grid *g, int y, int x)
     }
   }
 
-  //check right win (--->)
+  //check bottom left
+  if(y < 3 && x > 2){
+    for(i = 0; i < 4; ++i){
+      if(g->map[y+i][x-i] == player_turn){
+	downleft++;
+      }
+    }
+  }
 
-  //check top left win
 
-  //check top right win
+  //check bottom right //works
+  if(y < 3 && x < 4){
+    for(i = 0; i < 4; ++i){
+      if(g->map[y+i][x+i] == player_turn){
+	downright++;
+      }
+    }
+  }
 
-  if(down >= 4 || horizontal >= 4){
+  //check up left //works
+  if(x > 2 && y > 2){
+    for(i = 0; i < 4; ++i){
+      if(g->map[y-i][x-i] == player_turn){
+	upleft++;
+      }
+    }
+  }
+
+  //check up right //works
+  if(y > 2 && x < 4){
+    for(i = 0; i < 4; ++i){
+      if(g->map[y-i][x+i] == player_turn){
+	upright++;
+      }
+    }
+  }
+
+
+  //-----------
+
+  //checks tie
+  if(tie){
+    g->game_end = 't';
+    g->game_over = 1;
+  }
+
+  //checks if won through either method
+  if(down >= 4 || horizontal >= 4 || downleft >= 4 || downright >= 4 || upleft >= 4 || upright >= 4){
     g->game_end = player_turn;
     g->game_over = 1;
   }
